@@ -8,14 +8,11 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Farrow',
   tagline: 'Type-safe asymptotic TypeScript full-stack framework',
-  url: 'https://farrow-js.github.io/',
-  baseUrl: '/docs/',
+  url: 'https://farrowjs.netlify.app',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'farrow-js', // Usually your GitHub org/user name.
-  projectName: 'docs', // Usually your repo name.
-  deploymentBranch: "release",
 
   i18n: {
     defaultLocale: 'en',
