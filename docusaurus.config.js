@@ -8,13 +8,13 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Farrow',
   tagline: 'Type-safe asymptotic TypeScript full-stack framework',
-  url: 'https://farrow-js.github.io/farrow-docs/',
+  url: 'https://farrow-js.github.io/docs/',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'farrow-js', // Usually your GitHub org/user name.
-  projectName: 'farrow-docs', // Usually your repo name.
+  projectName: 'docs', // Usually your repo name.
   deploymentBranch: "release",
 
   i18n: {
@@ -30,13 +30,13 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/farrow-js/farrow-docs/',
+          editUrl: 'https://github.com/farrow-js/docs/',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            'https://github.com/farrow-js/farrow-docs/',
+            'https://github.com/farrow-js/docs/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -113,7 +113,7 @@ const config = {
               },
               {
                 label: 'Blog',
-                href: 'https://farrow-js.github.io/farrow-docs/build/blog',
+                href: 'https://farrow-js.github.io/docs/blog',
               },
             ],
           },

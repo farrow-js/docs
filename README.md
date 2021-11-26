@@ -74,11 +74,12 @@ and then the build output of this project will be committed to branch `release` 
 
 ## TODO
 
-[] i18n
-[] search
-[] blog
-[] doc
-[] src
-[] dark mode
-[] logo
-[] readme
+[ ] i18n
+[ ] search
+[ ] blog
+[ ] doc
+[ ] src
+[ ] dark mode
+[ ] logo
+[x] readme
+[ ] create-farrow-app 新增项目模版

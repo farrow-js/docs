@@ -1,5 +1,5 @@
 ---
-slug: /design
+slug: /philosophy
 title: Introduction
 authors: [tqma113]
 tags: []
