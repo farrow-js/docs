@@ -16,11 +16,124 @@ If you have questions about anything related to Farrow, you're always welcome to
 #### System Requirements
 
 * [Node.js 14.18.1](https://nodejs.org) or later
+* [TypeScript 4.3.0](https://www.typescriptlang.org) or higher（Can be installed with scaffolding if farrow is not introduced in an existing project）
 * MacOS, Windows (including WSL), and Linux are supported
 
 ## Setup
 
-We recommend creating a new Farrow app using `create-farrow-app`, which sets up everything automatically for you. To create a project, run:
+Init project by creating a empty Node.js project.
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+mkdir farrow-project
+cd ./farrow-project
+npm init -y
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+mkdir farrow-project
+cd ./farrow-project
+yarn init -y
+```
+
+</TabItem>
+</Tabs>
+
+Install **Farrow** libraries
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install farrow-pipeline farrow-schema farrow-http
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn add farrow-pipeline farrow-schema farrow-http
+```
+
+</TabItem>
+</Tabs>
+
+Create `src/index.ts` as entry and add the following content
+
+```ts title="src/index.ts"
+import { Http, Response } from 'farrow-http'
+
+const http = Http()
+
+http.get('/').use( () => {
+  return Response.text('Hello Farrow')
+})
+
+http.listen(3000, () => {
+  console.log('server started at http://localhost:3000')
+})
+```
+
+Install development tools
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install --dev farrow typescript
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn add -D farrow typescript
+```
+
+</TabItem>
+</Tabs>
+
+Add `scripts` in `package.json`
+
+```json title="package.json"
+{
+  "scripts": {
+    "dev": "farrow dev",
+    "build": "farrow build",
+    "start": "farrow start"
+  }
+}
+```
+
+Start server with:
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm run dev
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn run dev
+```
+
+</TabItem>
+</Tabs>
+
+Open your browser and navigate to <http://localhost:3000/>.
+
+## Start with Template
+
+We also recommend creating a new Farrow app using `create-farrow-app`, which sets up everything automatically for you. To create a project, run:
 
 <Tabs groupId="package-tool">
 <TabItem value="npm" label="npm">
@@ -71,6 +184,8 @@ yarn dev
 </TabItem>
 </Tabs>
 
-Open your browser and navigate to http://localhost:3000/.
+Open your browser and navigate to <http://localhost:3000/>.
 
-For more information on how to use `create-farrow-app`, you can review the `create-farrow-app` documentation.
+:::info
+For more information on how to use `create-farrow-app`, you can review the [`create-farrow-app` documentation](/docs/api/framework/create-farrow-app).
+:::

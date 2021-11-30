@@ -6,6 +6,10 @@ tags: []
 sidebar_position: 1
 ---
 
-## Middleware
+HTTP Server is the core stuff in Farrow.
+
+## Basic Features
 
 ## With Express/Koa
+
+

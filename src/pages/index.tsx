@@ -92,7 +92,7 @@ export default function Home() {
                 "button button--outline button--secondary button--lg",
                 styles.getStarted
               )}
-              to={useBaseUrl("/docs/quick-start")}
+              to={useBaseUrl("/docs/tutorial")}
             >
               <Translate id="home.button.quick-start">Quick Start</Translate>
             </Link>
