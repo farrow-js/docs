@@ -6,7 +6,7 @@ tags: []
 sidebar_position: 1
 ---
 
-After creating a server in [Getting Started](./getting-started.mdx), Farrow also can do more complex thing.
+After creating a server in [Getting Started](./getting-started.mdx), Farrow also can do more complex thing with another APIs as a HTTP Server.
 
 Farrow middleware is an improvement based on the traditional middleware. Only [`requestInfo` object](../guide/http-server/base/request.md) and `next` function are in parameters, Response info is represeted by return value, a object created by `Response` object in farrow.
 
@@ -43,7 +43,7 @@ And the status and headers, cookies of response alse can be set with [`Response`
 
 ```
 
-Farrow also has **Routing** system, In addition to add middleware by `http.use`, Farrow also support use `http.METHOD()` to constraint the service the particular endpoint by `METHOD` function, `path` of URL and Schema of Content.
+Farrow also has **Routing** system, In addition to add middleware by `http.use`, Farrow also support use `http.METHOD()` to constraint the service the particular endpoint by `METHOD` function, `path` of URL and [Schema of Content](../guide/schema/validation-type.md).
 
 ```ts
 http
@@ -104,10 +104,6 @@ http
   })
 
 const app = express()
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
 
 app.use('/farrow', adapter(http))
 ```
