@@ -50,14 +50,14 @@ Install **Farrow** libraries
 <TabItem value="npm" label="npm">
 
 ```bash
-npm install farrow-pipeline farrow-schema farrow-http
+npm install farrow-http
 ```
 
 </TabItem>
 <TabItem value="yarn" label="Yarn" default>
 
 ```bash
-yarn add farrow-pipeline farrow-schema farrow-http
+yarn add farrow-http
 ```
 
 </TabItem>
@@ -70,7 +70,7 @@ import { Http, Response } from 'farrow-http'
 
 const http = Http()
 
-http.get('/').use( () => {
+http.use(() => {
   return Response.text('Hello Farrow')
 })
 

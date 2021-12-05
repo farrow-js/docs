@@ -6,10 +6,112 @@ tags: []
 sidebar_position: 1
 ---
 
-HTTP Server is the core stuff in Farrow.
+After creating a server in [Getting Started](./getting-started.mdx), Farrow also can do more complex thing.
 
-## Basic Features
+Farrow middleware is an improvement based on the traditional middleware. Only [`requestInfo` object](../guide/http-server/base/request.md) and `next` function are in parameters, Response info is represeted by return value, a object created by `Response` object in farrow.
 
-## With Express/Koa
+```ts
+http.use((requestInfo, next) => {
+  return Response.text("Hello Farrow");
+});
+```
 
+And the [`requestInfo` object](../guide/http-server/base/request.md) is not [Node.js http.IncomingMessage](https://nodejs.org/dist/latest-v16.x/docs/api/http.html#class-httpincomingmessage), but only contains the raw information extracted from [Node.js http.IncomingMessage](https://nodejs.org/dist/latest-v16.x/docs/api/http.html#class-httpincomingmessage).
 
+So it can be used like this.
+
+```ts
+http.use(({ pathname }, next) => {
+  return Response.text(`Hello Farrow with path: ${pathname}`);
+});
+```
+
+As you saw, the response information is set by returning [`Response` object](../guide/http-server/base/response.md). In addition to set the response body with `text`, the `json`, `file`... alse can set the body with another format.
+
+```ts
+http.use(({ pathname }, next) => {
+  return Response.json({
+    message: 'Hello Farrow',
+    pathname
+  });
+});
+```
+
+And the status and headers, cookies of response alse can be set with [`Response` object](../guide/http-server/base/response.md).
+
+```ts
+
+```
+
+Farrow also has **Routing** system, In addition to add middleware by `http.use`, Farrow also support use `http.METHOD()` to constraint the service the particular endpoint by `METHOD` function, `path` of URL and Schema of Content.
+
+```ts
+http
+  // constraint to `post` method, `/addTodo` path and with body like { content: string }
+  .post("/addTodo", { body: { content: String } })
+  .use(({ body: { content } }) => {
+    // ...
+
+    return Response.json({
+      code: 1,
+      message: "success",
+    });
+  });
+```
+
+If you do not you to constraint the [method](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods), `http.match` is the better choice.
+
+```ts
+http
+  .match({ pathname: "/addTodo", body: { content: String } })
+  .use(({ body: { content } }) => {
+    // ...
+
+    return Response.json({
+      code: 1,
+      message: "success",
+    });
+  });
+```
+
+Farrow has provided the [`Router`](/docs/tutorial/http-server#todo) to support grouping api handling.
+
+```ts
+import { Http, Router, Response } from "farrow-http";
+
+const todo = Router()
+
+todo.get('/list').use(/** */)
+todo.post('/add').use(/** */)
+todo.put('/clear').use(/** */)
+
+const http = Http();
+
+http.route('/todo').use(todo)
+```
+
+Using **Farrow** in other HTTP Server is very easy. In Express, you can add Farrow app by adapter.
+
+```ts
+const http = Http()
+
+http
+  .match({
+    pathname: '/test',
+  })
+  .use((data) => {
+    return Response.text(JSON.stringify(data))
+  })
+
+const app = express()
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.use('/farrow', adapter(http))
+```
+
+:::info
+For now, Farrow has support Express, Koa. See more at [farrow-express](../api/pipeline/04-farrow-express.md), [farrow-koa](../api/pipeline/05-farrow-koa.md).
+:::
