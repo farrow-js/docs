@@ -90,6 +90,12 @@ const http = Http();
 http.route('/todo').use(todo)
 ```
 
+:::info
+If you want to know more detail about Farrow HTTP Server, see [HTTP Server](../guide/http-server/base/request.md).
+
+If you want to know the design philosophy about Farrow HTTP Server, see [Why new middleware mode](../philosophy/middleware-mode.md) and [Why Schema Builder Based on TypeScript](../philosophy/schema-builder.md).
+:::
+
 Using **Farrow** in other HTTP Server is very easy. In Express, you can add Farrow app by adapter.
 
 ```ts

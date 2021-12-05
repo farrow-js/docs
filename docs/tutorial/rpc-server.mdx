@@ -11,6 +11,8 @@ import TabItem from '@theme/TabItem';
 
 Farrow also support the RPC-like server services. It focus on providing type friendly, validation for JSON value. It will service as the middleware of [Farrow HTTP Server](./http-server.md).
 
+## RPC
+
 Before continuing the development, the packages(which support validation, code generation... by [Farrow Schema](../guide/schema/validation-type.md)) for Farrow RPC API need be installed.
 
 <Tabs groupId="package-tool">
@@ -113,3 +115,88 @@ You also can send the request with postman. But the input shuold be:
   },
 }
 ```
+
+:::info
+If you want to know more detail about Farrow API, see [RPC](../guide/rpc-server/base/schema.md).
+
+If you want to know the design philosophy about Farrow API, see [Why RPC-like API](../philosophy/rpc-like.md) and [Why Schema Builder Based on TypeScript](../philosophy/schema-builder.md).
+:::
+
+## Code Generation
+
+For better presentation, we need a SPA project. Using `create-react-app`.
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm init react-app react-project --template typescript
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn create react-app react-project --template typescript
+```
+
+</TabItem>
+</Tabs>
+
+Install `farrow` and `farrow-api-client`.
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install farrow-api-client
+npm install --dev farrow
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn add farrow-api-client
+yarn add -D farrow
+```
+
+</TabItem>
+</Tabs>
+
+Creating `farrow.config.js`.
+
+```js title="farrow.config.js"
+const { createFarrowConfig } = require('farrow')
+
+module.exports = createFarrowConfig({
+  api: [
+    {
+      src: 'http://localhost:3000/api/greeting',
+      dist: `${__dirname}/src/api/greeting.ts`,
+    },
+  ],
+})
+```
+
+Add `farrow dev` to `start` script in `package.json`, and run it. The calling code for client will be generated to `/src/api/greeting.ts`Call it in React Component.
+
+```ts
+import { api } from './api/greeting'
+
+// ...
+
+useEffect(() => {
+  api.greeting({ name: 'foo' }).then(({ greeting }) => {
+    console.log(greeting)
+  })
+}, [])
+```
+
+Open the SPA page in browser, you will see the request and the consoled greeting message.
+
+:::info
+If you want to know more detail about **Code generation** of Farrow API, see [Get code at Client](../guide/server-and-client/client.md).
+
+If you want to know the design philosophy about Farrow API, see [Why RPC-like API](../philosophy/rpc-like.md) and [Why Schema Builder Based on TypeScript](../philosophy/schema-builder.md).
+:::
