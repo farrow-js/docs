@@ -1,0 +1,63 @@
+---
+title: farrow-cors
+authors: [tqma113]
+tags: []
+sidebar_position: 2
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Cross-Origin Resource Sharing(CORS) for farrow-http.
+
+## Installation
+
+This is a [Node.js](https://nodejs.org/en/) module available through the
+[npm registry](https://www.npmjs.com/).
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install farrow-cors
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn add farrow-cors
+```
+
+</TabItem>
+</Tabs>
+
+## Usage
+
+```javascript
+import { Http, Response } from 'farrow-http'
+import { cors } from 'farrow-cors'
+
+const http = Http()
+
+http.use(cors())
+
+http
+  .match({
+    pathname: '/product/:id',
+    params: {
+      id: Number,
+    },
+  })
+  .use(() => {
+    return Response.json({ msg: 'This is CORS-enabled for all origins!' })
+  })
+
+http.listen(80, function () {
+  console.log('CORS-enabled web server listening on port 80')
+})
+```
+
+## Options
+
+See [expressjs/cors](https://github.com/expressjs/cors).
