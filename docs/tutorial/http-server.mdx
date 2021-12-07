@@ -8,7 +8,7 @@ sidebar_position: 1
 
 After creating a server in [Getting Started](./getting-started.mdx), Farrow also can do more complex thing with another APIs as a HTTP Server.
 
-Farrow middleware is an improvement based on the traditional middleware. Only [`requestInfo` object](../guide/http-server/base/request.md) and `next` function are in parameters, Response info is represeted by return value, a object created by `Response` object in farrow.
+Farrow middleware is an improvement based on the traditional middleware. Only [`requestInfo` object](../guide/http-server/base/request.mdx) and `next` function are in parameters, Response info is represeted by return value, a object created by `Response` object in farrow.
 
 ```ts
 http.use((requestInfo, next) => {
@@ -16,7 +16,7 @@ http.use((requestInfo, next) => {
 });
 ```
 
-And the [`requestInfo` object](../guide/http-server/base/request.md) is not [Node.js http.IncomingMessage](https://nodejs.org/dist/latest-v16.x/docs/api/http.html#class-httpincomingmessage), but only contains the raw information extracted from [Node.js http.IncomingMessage](https://nodejs.org/dist/latest-v16.x/docs/api/http.html#class-httpincomingmessage).
+And the [`requestInfo` object](../guide/http-server/base/request.mdx) is not [Node.js http.IncomingMessage](https://nodejs.org/dist/latest-v16.x/docs/api/http.html#class-httpincomingmessage), but only contains the raw information extracted from [Node.js http.IncomingMessage](https://nodejs.org/dist/latest-v16.x/docs/api/http.html#class-httpincomingmessage).
 
 So it can be used like this.
 
@@ -26,7 +26,7 @@ http.use(({ pathname }, next) => {
 });
 ```
 
-As you saw, the response information is set by returning [`Response` object](../guide/http-server/base/response.md). In addition to set the response body with `text`, the `json`, `file`... alse can set the body with another format.
+As you saw, the response information is set by returning [`Response` object](../guide/http-server/base/response.mdx). In addition to set the response body with `text`, the `json`, `file`... alse can set the body with another format.
 
 ```ts
 http.use(({ pathname }, next) => {
@@ -37,13 +37,13 @@ http.use(({ pathname }, next) => {
 });
 ```
 
-And the status and headers, cookies of response alse can be set with [`Response` object](../guide/http-server/base/response.md).
+And the status and headers, cookies of response alse can be set with [`Response` object](../guide/http-server/base/response.mdx).
 
 ```ts
 
 ```
 
-Farrow also has **Routing** system, In addition to add middleware by `http.use`, Farrow also support use `http.METHOD()` to constraint the service the particular endpoint by `METHOD` function, `path` of URL and [Schema of Content](../guide/schema/validation-type.md).
+Farrow also has **Routing** system, In addition to add middleware by `http.use`, Farrow also support use `http.METHOD()` to constraint the service the particular endpoint by `METHOD` function, `path` of URL and [Schema of Content](../guide/schema/validation-type.mdx).
 
 ```ts
 http
@@ -91,9 +91,9 @@ http.route('/todo').use(todo)
 ```
 
 :::info
-If you want to know more detail about Farrow HTTP Server, see [HTTP Server](../guide/http-server/base/request.md).
+If you want to know more detail about Farrow HTTP Server, see [HTTP Server](../guide/http-server/base/request.mdx).
 
-If you want to know the design philosophy about Farrow HTTP Server, see [Why new middleware mode](../philosophy/middleware-mode.md) and [Why Schema Builder Based on TypeScript](../philosophy/schema-builder.md).
+If you want to know the design philosophy about Farrow HTTP Server, see [Why new middleware mode](../philosophy/middleware-mode.mdx) and [Why Schema Builder Based on TypeScript](../philosophy/schema-builder.mdx).
 :::
 
 Using **Farrow** in other HTTP Server is very easy. In Express, you can add Farrow app by adapter.
@@ -115,5 +115,5 @@ app.use('/farrow', adapter(http))
 ```
 
 :::info
-For now, Farrow has support Express, Koa. See more at [farrow-express](../api/pipeline/04-farrow-express.md), [farrow-koa](../api/pipeline/05-farrow-koa.md).
+For now, Farrow has support Express, Koa. See more at [farrow-express](../api/pipeline/04-farrow-express.mdx), [farrow-koa](../api/pipeline/05-farrow-koa.mdx).
 :::
