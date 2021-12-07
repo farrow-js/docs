@@ -5,3 +5,5 @@ authors: [tqma113]
 tags: []
 sidebar_position: 0
 ---
+
+During the birth of Farrow, there were many interesting stories and ideas. They will want to show you the exploration and thinking behind some of Farrow’s designs.
