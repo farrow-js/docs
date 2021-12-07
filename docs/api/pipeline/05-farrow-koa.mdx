@@ -4,3 +4,95 @@ authors: [tqma113]
 tags: []
 sidebar_position: 4
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Adapter for `farrow-http` in [Koa](https://github.com/koajs/koa) app.
+
+## Setup
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install farrow-koa
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn add farrow-koa
+```
+
+</TabItem>
+</Tabs>
+
+## Usage
+
+Create a `farrow-http` app first:
+
+```ts
+import { Http } from 'farrow-http'
+
+const http = Http()
+
+http
+  .match({
+    pathname: '/test',
+  })
+  .use((data) => {
+    return Response.text(JSON.stringify(data))
+  })
+```
+
+And then create a **Koa** app:
+
+```ts
+import Koa from 'koa'
+
+const PORT = 3000
+
+const app = new Koa()
+
+app.use(async (ctx) => {
+  ctx.body = 'Hello World'
+})
+
+app.listen(PORT, () => {
+  console.log(`Example app listening at http://localhost:${PORT}`)
+})
+```
+
+and combine them:
+
+```ts
+import Koa from 'koa'
+import { Http } from 'farrow-http'
+import { adapter } from 'farrow-koa'
+
+const PORT = 3000
+
+const http = Http()
+
+http
+  .match({
+    pathname: '/test',
+  })
+  .use((data) => {
+    return Response.text(JSON.stringify(data))
+  })
+
+const app = new Koa()
+
+app.use(adapter(http))
+
+app.listen(PORT, () => {
+  console.log(`Example app listening at http://localhost:${PORT}`)
+})
+```
+
+Then, you can use work with farrow stack in a Koa app.
+
+Or, you can combine them by `koa-router` to a specific route path in **Koa** app.

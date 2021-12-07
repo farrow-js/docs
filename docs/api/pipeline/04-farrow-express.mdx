@@ -4,3 +4,97 @@ authors: [tqma113]
 tags: []
 sidebar_position: 3
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Adapter for `farrow-http` in [Express](https://github.com/expressjs/express) app.
+
+## Setup
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install farrow-express
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn add farrow-express
+```
+
+</TabItem>
+</Tabs>
+
+Usage
+
+Create a `farrow-http` app first:
+
+```ts
+import { Http } from 'farrow-http'
+
+const http = Http()
+
+http
+  .match({
+    pathname: '/test',
+  })
+  .use((data) => {
+    return Response.text(JSON.stringify(data))
+  })
+```
+
+And then create a **Express** app:
+
+```ts
+import express from 'express'
+
+const PORT = 3000
+
+const app = express()
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.listen(PORT, () => {
+  console.log(`Example app listening at http://localhost:${PORT}`)
+})
+```
+
+and combine them:
+
+```ts
+import express from 'express'
+import { Http } from 'farrow-http'
+import { adapter } from 'farrow-express'
+
+const PORT = 3000
+
+const http = Http()
+
+http
+  .match({
+    pathname: '/test',
+  })
+  .use((data) => {
+    return Response.text(JSON.stringify(data))
+  })
+
+const app = express()
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.use('/farrow', adapter(http))
+
+app.listen(PORT, () => {
+  console.log(`Example app listening at http://localhost:${PORT}`)
+})
+```
+
+Then, you can use work with farrow stack under route path `/farrow` in a **Express** app.
