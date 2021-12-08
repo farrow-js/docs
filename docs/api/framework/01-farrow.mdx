@@ -4,3 +4,59 @@ authors: [tqma113]
 tags: []
 sidebar_position: 0
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Useful modules for developing and bundling farrow app.
+
+## Setup
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install --dev farrow
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn add -D farrow
+```
+
+</TabItem>
+</Tabs>
+
+## CLI
+
+### `dev`
+
+### `build`
+
+### `start`
+
+## `farrow.config.js`
+
+For define the behaviour of farrow, you need to create `farrow.config.js` file in the root of your project directory (next to package.json).
+
+`next.config.js` is a regular Node.js module, not a JSON file.
+
+Take a look at the following `next.config.js` example:
+
+```js
+const { createFarrowConfig } = require('farrow')
+
+module.exports = createFarrowConfig({
+  /* config options here */
+})
+```
+
+### `server`
+
+### `api`
+
+## API
+
+### `createFarrowConfig`
