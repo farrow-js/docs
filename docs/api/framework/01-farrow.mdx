@@ -41,14 +41,14 @@ yarn add -D farrow
 
 For define the behaviour of farrow, you need to create `farrow.config.js` file in the root of your project directory (next to package.json).
 
-`next.config.js` is a regular Node.js module, not a JSON file.
+`farrow.config.js` is a regular Node.js module, not a JSON file.
 
-Take a look at the following `next.config.js` example:
+Take a look at the following `farrow.config.js` example:
 
 ```js
-const { createFarrowConfig } = require('farrow')
+const { defineConfig } = require('farrow')
 
-module.exports = createFarrowConfig({
+module.exports = defineConfig({
   /* config options here */
 })
 ```
@@ -59,4 +59,4 @@ module.exports = createFarrowConfig({
 
 ## API
 
-### `createFarrowConfig`
+### `defineConfig`
