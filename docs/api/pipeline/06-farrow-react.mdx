@@ -4,3 +4,160 @@ authors: [tqma113]
 tags: []
 sidebar_position: 5
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+React adapter for [farrow-http]('./02-farrow-http.mdx').
+
+## Installation
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install farrow-react
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn add farrow-react
+```
+
+</TabItem>
+</Tabs>
+
+## API
+
+### `useReactView`
+
+For rendering React Element to Response of **farrow-http**.
+
+#### Type
+
+```ts
+const useReactView: (options?: ReactViewOptions | undefined) => {
+  render: <T extends JSX.Element>(element: T) => Http.Response;
+}
+```
+
+#### Usage
+
+```tsx
+import { Http } from 'farrow-http'
+import { useReactView } from 'farrow-react'
+
+const PORT = 3000
+
+const http = Http()
+
+http.use(async (req) => {
+  const ReactView = useReactView({
+    docType: '<!doctype html>',
+    useStream: true,
+  })
+
+  const element = <div>Hello Farrow</div>
+
+  return ReactView.render(html)
+})
+
+app.listen(PORT, () => {
+  console.log(`Example app listening at http://localhost:${PORT}`)
+})
+```
+
+#### Options
+
+```ts
+export type ReactResponseOptions = {
+  docType?: string
+}
+export type ReactViewOptions = ReactResponseOptions & {
+  useStream?: boolean
+}
+```
+
+* `docType`
+
+Type: 
+
+```ts
+docType?: string
+```
+
+For setting [html doc type](https://developer.mozilla.org/en-US/docs/Glossary/Doctype).
+
+Default: `"<!doctype html>"`
+
+* `useStream`
+
+Type:
+
+```ts
+useStream?: boolean
+```
+
+For setting if use stream to do the response.
+
+Default: `false`
+
+### `usePrefix`
+
+#### Type
+
+```ts
+const usePrefix: () => string
+```
+
+#### Usage
+
+```tsx
+import { usePrefix } from 'farrow-react/hooks'
+const Test = () => {
+  const prefix = usePrefix()
+  return <div>{prefix}</div>
+}
+```
+
+### `useRenderContext`
+
+#### Type
+
+```ts
+export type ReactRenderContext = {
+  basenames: string[]
+}
+
+const useRenderContext: () => ReactRenderContext
+```
+
+#### Usage
+
+```tsx
+const Test = () => {
+  let renderContext = useRenderContext()
+  return <div>{renderContext.basenames.join('')}</div>
+}
+```
+
+### `Link`
+
+#### Type
+
+```ts
+const Link: (props: React.ComponentPropsWithoutRef<'a'>) => JSX.Element
+```
+
+#### Usage
+
+```tsx
+import { Link } from 'farrow-react/Link'
+
+const Test = () => {
+  // Link's props is equal to <a />
+  return <Link href="/">a link</Link>
+}
+```

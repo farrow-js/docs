@@ -4,3 +4,54 @@ authors: [tqma113]
 tags: []
 sidebar_position: 2
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+A module abstraction providing dependencies management.
+
+## Installation
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install farrow-module
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn add farrow-module
+```
+
+</TabItem>
+</Tabs>
+
+## Glossary
+
+- `Module`:
+
+  - Any `Class` which `extends Module`
+  - it's a basic unit for writing logic code
+  - it should not define custom constructor parameters
+  - it should not be instantiated via the `new` keyword manually
+  - everything it needed is via `this.use(DepClass)`
+
+- `Provider`
+
+  - it can be created via `createProvider<Type>(defaultValue)`
+  - it should be attached to `Container` via `this.inject(Provider.provide(value))`
+  - it should be placed only once for a `Container`, duplicated is not allow
+
+- `Container`
+
+  - Any `Class` which `extends Container`
+  - it's the entry of our code of `modules`
+  - it should be instantiated by the `new` keyword
+
+
+## Usage
+
+## API

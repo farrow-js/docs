@@ -8,9 +8,9 @@ sidebar_position: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Adapter for `farrow-http` in [Koa](https://github.com/koajs/koa) app.
+Adapter for `farrow-http` in **[Koa](https://github.com/koajs/koa)** app.
 
-## Setup
+## Installation
 
 <Tabs groupId="package-tool">
 <TabItem value="npm" label="npm">
@@ -28,6 +28,12 @@ yarn add farrow-koa
 
 </TabItem>
 </Tabs>
+
+## Type
+
+```ts
+const adapter: (httpPipeline: HttpPipeline) => Middleware
+```
 
 ## Usage
 
