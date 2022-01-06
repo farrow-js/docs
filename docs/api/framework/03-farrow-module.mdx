@@ -29,7 +29,7 @@ yarn add farrow-module
 </TabItem>
 </Tabs>
 
-## Glossary
+:::info Glossary
 
 - `Module`:
 
@@ -50,8 +50,207 @@ yarn add farrow-module
   - Any `Class` which `extends Container`
   - it's the entry of our code of `modules`
   - it should be instantiated by the `new` keyword
+:::
 
+## API
+
+### `createProvider`
+
+Create the context data provider.
+
+```ts
+createProvider<T>(defaultValue?: T | undefined): ModuleProvider<T>
+```
+
+It could be used and inject the new value in `Module`.
+
+```ts
+const foo = createProvider(0)
+
+class Bar extends Module {
+  foo = this.use(foo)
+
+  getFoo: () => {
+    return this.foo
+  }
+}
+
+class Baz extends Container {
+  foo =  this.inject(foo.provide(1))
+
+  bar = this.new(Bar)
+}
+
+const bar = new Bar()
+const baz = new Baz()
+
+bar.getFoo() // 0
+baz.bar.getFoo() // 1
+```
+
+### `Module`
+
+It is a class. It has some method.
+
+* `use`
+
+  Used for adding `Provider` or another `Module`
+
+  ```ts
+  const foo = createProvider(0)
+
+  class Bar extends Module {
+    foo = this.use(foo)
+  }
+
+  class Baz extends Module {
+    bar = this.use(Bar)
+  }
+  ```
+
+* `inject`
+
+  Used for inject new value for a `Provider`
+
+  ```ts
+  // default value is `0`
+  const foo = createProvider(0)
+
+  class Bar extends Module {
+    foo = this.use(foo)
+  }
+
+  class Baz extends Container {
+    // new value is `1`
+    foo =  this.inject(foo.provide(1))
+
+    bar = this.new(Bar)
+  }
+  ```
+
+* `new`
+
+  Used for create `new` another `Module` in current `Module`.
+
+  ```ts
+  const foo = createProvider(0)
+
+  class Bar extends Module {
+    foo = this.use(foo)
+  }
+
+  class Baz extends Container {
+    bar = this.new(Bar)
+  }
+  ```
+
+### `Container`
+
+It extends from `Module`. And do not have any another method.
 
 ## Usage
 
-## API
+This is the example to manage the restful client.
+
+```ts
+import { createProvider, Module } from 'farrow-module'
+
+export const fetchProvider = createProvider<typeof fetch>()
+
+export const protocolProvider = createProvider<string>('http')
+export const hostProvider = createProvider<string>('localhost')
+export const portProvider = createProvider<string>('3000')
+export const basenameProvider = createProvider<string>('')
+export const headersProvider = createProvider<Record<string, string>>({})
+
+export class RestfulClient extends Module {
+  fetch = this.use(fetchProvider)
+
+  protocol = this.use(protocolProvider)
+  host = this.use(hostProvider)
+  port = this.use(portProvider)
+  basename = this.use(basenameProvider)
+
+  headers = this.use(headersProvider)
+
+  post = (input: RequestInfo, data: object, init?: RequestInit) => {
+    return this.fetch(this.resolveInput(input), this.resolveInit({
+      ...init,
+      body: JSON.stringify(data),
+      headers: {
+        'Context-Type': 'application/json'
+      },
+      method: 'POST',
+    }))
+  }
+
+  get = (input: RequestInfo, query?: Record<string, string>, init?: RequestInit) => {
+    let search = ''
+    if (query) {
+      const searchParams = new URLSearchParams(query)
+      search = `?${searchParams.toString()}`
+    }
+
+    return this.fetch(this.resolveInput(`${input}?${search}`), this.resolveInit({
+      ...init,
+      method: 'GET',
+    }))
+  }
+
+  put = (input: RequestInfo, data?: object, init?: RequestInit) => {
+    return this.fetch(this.resolveInput(input), this.resolveInit({
+      ...init,
+      body: JSON.stringify(data),
+      headers: {
+        'Context-Type': 'application/json'
+      },
+      method: 'PUT',
+    }))
+  }
+
+  private resolveInput(input: RequestInfo): RequestInfo {
+    if (typeof input === 'string') {
+      if (input.startsWith('http') || input.startsWith('https')) {
+        return input
+      }
+
+      if (input.startsWith('//')) {
+        return `${this.protocol}:${input}`
+      }
+
+      if (input.startsWith('/')) {
+        return `${this.protocol}://${this.host}:${this.port}${this.basename}${input}`
+      }
+
+      return `${this.protocol}://${this.host}:${this.port}${this.basename}/${input}`
+    } else {
+      return input
+    }
+  }
+
+  private resolveInit(init?: RequestInit) {
+    if (init) {
+      return {
+        ...init,
+        headers: {
+          ...this.headers,
+          ...init.headers
+        }
+      }
+    } else {
+      return {
+        headers: this.headers
+      }
+    }
+  }
+}
+
+const restfulClient = new RestfulClient()
+
+const res0 = await restfulClient.get('/foo')
+const res1 = await restfulClient.post('/bar', { bar: 'bar' })
+```
+
+:::info
+More complete sample you can see [farrow-sample/24-module-todo](https://github.com/tqma113/farrow-sample/tree/main/samples/24-module-todo).
+:::

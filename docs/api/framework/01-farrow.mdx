@@ -31,11 +31,48 @@ yarn add -D farrow
 
 ## CLI
 
+The farrow CLI allows you to dev, build, and start your application.
+
+To get a list of the available CLI commands, run the following command inside your project directory:
+
+```bash
+farrow -h
+```
+
+The output should look like this:
+
+```bash
+Usage
+  $ farrow <command>
+
+Available commands
+  dev, build, start
+
+Options
+  --version, -v   Version number
+  --help, -h      Displays this message
+
+For more information run a command with the --help flag
+  $ farrow dev --help
+```
+
 ### `dev`
+
+`farrow dev` starts the application in development mode with hot-code reloading, error reporting, and more.
+
+The application at `src` will start by default with development mode.
 
 ### `build`
 
+`farrow build` creates an optimized production build of your application.
+
 ### `start`
+
+`farrow start` runs the output code of bundler.
+
+:::info
+Example: [farrow-sample/05-http-todo-app](https://github.com/tqma113/farrow-sample/tree/main/samples/05-http-todo-app).
+:::
 
 ## `farrow.config.js`
 
@@ -53,10 +90,73 @@ module.exports = defineConfig({
 })
 ```
 
+Also support TypeScript
+
+```ts
+import { defineConfig } form 'farrow'
+
+export default defineConfig({
+  /* config options here */
+})
+```
+
+It has the type:
+
+```ts
+export type Config = {
+  server?: ServerBundlerOptions | ServerBundlerOptions[] | false
+  api?: ApiClientOptions | ApiClientOptions[] | false
+}
+```
+
 ### `server`
+
+The config of server app(s).
+
+```ts
+export type ServerBundlerOptions = {
+  entry?: string
+  src?: string
+  dist?: string
+  nodeArgs?: string[]
+  env?: NodeJS.ProcessEnv
+  esbuild?: Omit<BuildOptions, 'entryPoints' | 'outdir' | 'outbase'>
+  autoExternal?: boolean
+}
+```
+
+* `entry`
+
+Entry of app. Default `index.ts`.
+
+* `src`
+
+Folder of source code. Default `./src`.
+
+* `dist`
+
+Folder of output code. Default `./dist`.
+
+* `nodeArgs`
+
+For creating the config value. eg. `{ NODE_ENV: 'production' }`.
+
+* `env`
+
+Env value for Node.js. eg. `{ NODE_ENV: 'production' }`, `NODE_ENV = production` in `farrow start`, `NODE_ENV = development` in `farrow dev`.
+
+* `esbuild`
+
+Options for esbuild.
+
+* `autoExternal`
+
+Auto add closest package.json dependenties to esbuild external or not.
 
 ### `api`
 
-## API
+Args for Node.js. 
 
-### `defineConfig`
+:::info
+See more example at [farrow-sample](https://github.com/tqma113/farrow-sample).
+:::
