@@ -502,6 +502,52 @@ console.log(await foo.run(1)) // 4 = (1 + 1) * 2
 console.log(await foo.run(5)) // 12 = (5 + 1) * 2
 ```
 
+### Async Hook
+
+Open/close the feature: Async Hook with function.
+
+```ts
+import { enable, disable } from 'farrow-pipeline/asyncHooks.node'
+```
+
+#### `enable`
+
+**Type Signature:**
+
+```ts
+const enable: () => void
+```
+
+**Example Usage:**
+
+```ts
+import { enable } from 'farrow-pipeline/asyncHooks.node'
+
+enable()
+```
+
+#### `disable`
+
+**Type Signature:**
+
+```ts
+const disable: () => void
+```
+
+**Example Usage:**
+
+```ts
+import { disable } from 'farrow-pipeline/asyncHooks.node'
+
+disable()
+```
+
+:::warn
+Node.js performance will be worse with this on, with Promise taking two to three times longer to run, see [bmeurer/async-hooks-performance-impact](https://github.com/bmeurer/async-hooks-performance-impact) for details.
+:::
+
+#### 
+
 ## Learn more
 
 :::info Relative Module
