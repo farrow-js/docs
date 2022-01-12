@@ -8,9 +8,11 @@ sidebar_position: 3
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+import { Card } from 'antd';
+
 Adapter for `farrow-http` in [Express](https://github.com/expressjs/express) app.
 
-## Setup
+## Installation
 
 <Tabs groupId="package-tool">
 <TabItem value="npm" label="npm">
@@ -29,7 +31,7 @@ yarn add farrow-express
 </TabItem>
 </Tabs>
 
-## Type
+**Type Signature:**
 
 ```ts
 const adapter: (httpPipeline: HttpPipeline) => RequestHandler
@@ -104,3 +106,14 @@ app.listen(PORT, () => {
 ```
 
 Then, you can use work with farrow stack under route path `/farrow` in a **Express** app.
+
+## Learn more
+
+:::info Relative Module
+* [farrow-http](./02-farrow-http.mdx): A Type-Friendly Web Framework
+* [farrow-koa](./05-farrow-koa.mdx): Adapter for `farrow-http` in **[Koa](https://github.com/koajs/koa)** app.
+:::
+
+:::info Sample
+* [farrow-sample/17-http-express](https://github.com/tqma113/farrow-sample/tree/main/samples/17-http-express): HTTP Server sample with [Express](https://github.com/expressjs/express).
+:::

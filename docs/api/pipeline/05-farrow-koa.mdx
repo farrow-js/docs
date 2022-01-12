@@ -29,7 +29,7 @@ yarn add farrow-koa
 </TabItem>
 </Tabs>
 
-## Type
+**Type Signature:**
 
 ```ts
 const adapter: (httpPipeline: HttpPipeline) => Middleware
@@ -102,3 +102,14 @@ app.listen(PORT, () => {
 Then, you can use work with farrow stack in a Koa app.
 
 Or, you can combine them by `koa-router` to a specific route path in **Koa** app.
+
+## Learn more
+
+:::info Relative Module
+* [farrow-http](./02-farrow-http.mdx): A Type-Friendly Web Framework
+* [farrow-express](./04-farrow-express.mdx): Adapter for `farrow-http` in [Express](https://github.com/expressjs/express) app.
+:::
+
+:::info Sample
+* [farrow-sample/18-http-koa](https://github.com/tqma113/farrow-sample/tree/main/samples/18-http-koa): HTTP Server sample with [Koa](https://github.com/koajs/koa).
+:::
