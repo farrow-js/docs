@@ -4,3 +4,144 @@ authors: [tqma113]
 tags: []
 sidebar_position: 1
 ---
+
+A cli-tools for scaffolding farrow project.
+
+:::note
+Compatibility Note: Farrow requires Node.js version >=14.0.0.
+:::
+
+## Create an App
+
+You’ll need to have Node >= 14 on your local development machine (but it’s not required on the server). You can use nvm (macOS/Linux) or nvm-windows to switch Node versions between different projects.
+
+To create a new app, you may choose one of the following methods:
+
+### npx
+
+```sh
+npx create-farrow-app my-app
+```
+
+([npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) comes with npm 5.2+ and higher, see instructions for older npm versions)
+
+### npm
+
+```sh
+npm init farrow-app my-app
+```
+
+`npm init <initializer>` is available in npm 6+
+
+### Yarn
+
+```sh
+yarn create farrow-app my-app
+```
+
+`yarn create` is available in Yarn 0.25+
+
+Then follow the prompts!
+
+Currently supported template presets include:
+
+- `farrow-only`: only includes farrow for server-side development
+
+- `farrow-vite-react`: includes Farrow, Vite and React for full stack development
+
+- `farrow-next-react`: includes Farrow, Next.js and React for full stack development
+
+## Output
+
+Running any of these commands will create a directory called my-app inside the current folder. Inside that directory, it will generate the initial project structure.
+
+### `farrow-only`
+
+```md
+.
+├── client
+│ └── todo.ts
+├── farrow.config.js
+├── package.json
+├── src
+│ ├── api
+│ │ ├── index.ts
+│ │ └── todo.ts
+│ └── index.ts
+└── tsconfig.json
+```
+
+### `farrow-vite-react`
+
+```md
+.
+├── farrow.config.js
+├── index.html
+├── package.json
+├── server
+│   ├── api
+│   │   ├── greet.ts
+│   │   └── index.ts
+│   └── index.ts
+├── src
+│   ├── App.css
+│   ├── App.tsx
+│   ├── api
+│   │   └── greet.ts
+│   ├── favicon.svg
+│   ├── index.css
+│   ├── logo.svg
+│   └── main.tsx
+├── tsconfig.json
+└── vite.config.ts
+```
+
+### `farrow-next-react`
+
+```md
+.
+├── farrow.config.js
+├── next-env.d.ts
+├── package.json
+├── pages
+│   ├── \_app.tsx
+│   └── index.tsx
+├── public
+│   └── logo.svg
+├── server
+│   ├── api
+│   │   ├── greet.ts
+│   │   └── index.ts
+│   └── index.ts
+├── src
+│   ├── api
+│   │   └── greet.ts
+│   ├── css
+│   │   ├── App.css
+│   │   └── index.css
+│   └── pages
+│   └── index
+│   ├── Controller.ts
+│   ├── View.tsx
+│   └── index.ts
+└── tsconfig.json
+```
+
+## Script
+
+The script process is [farrow](./01-farrow.mdx).
+
+## Learn more
+
+:::info Relative Module
+* [farrow-http](../pipeline/02-farrow-http.mdx): A Type-Friendly Web Framework
+* [farrow-vite](../pipeline/07-farrow-vite.mdx): **Vite** adapter for farrow-http
+* [farrow-next](./04-farrow-next.mdx): Upper-level business framework based on the **Next.js** package
+* [farrow-next-server](./05-farrow-next-server.mdx): Adapter of **Next.js** for **farrow-http**.
+:::
+
+:::info Sample
+* [farrow-sample/10-api-base](https://github.com/tqma113/farrow-sample/tree/main/samples/10-api-base)
+* [farrow-sample/11-next-react](https://github.com/tqma113/farrow-sample/tree/main/samples/11-next-react)
+* [farrow-sample/12-vite-react](https://github.com/tqma113/farrow-sample/tree/main/samples/12-vite-react)
+:::
