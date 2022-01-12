@@ -71,15 +71,3 @@ $ GIT_USER=<Your GitHub username> yarn deploy
 ```
 
 and then the build output of this project will be committed to branch `release` of [Farrow-DOCS](https://github.com/farrow-js/farrow-docs). And Github Page will deploy to <https://farrow-js.github.io/farrow-docs/>.
-
-## TODO
-
-[ ] i18n
-[ ] search
-[ ] blog
-[ ] doc
-[ ] src
-[ ] dark mode
-[ ] logo
-[x] readme
-[ ] create-farrow-app 新增项目模版

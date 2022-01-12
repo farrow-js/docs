@@ -29,7 +29,13 @@ yarn add farrow-express
 </TabItem>
 </Tabs>
 
-Usage
+## Type
+
+```ts
+const adapter: (httpPipeline: HttpPipeline) => RequestHandler
+```
+
+## Usage
 
 Create a `farrow-http` app first:
 
@@ -69,7 +75,7 @@ and combine them:
 
 ```ts
 import express from 'express'
-import { Http } from 'farrow-http'
+import { Http, Response } from 'farrow-http'
 import { adapter } from 'farrow-express'
 
 const PORT = 3000

@@ -4,3 +4,97 @@ authors: [tqma113]
 tags: []
 sidebar_position: 6
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+**farrow-vite**: Vite adapter for farrow-http
+
+Combining `farrow`, `farrow-http`, `farrow-api` and `farrow-vite`, we can setup a modern full-stack development.
+
+## Installation
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install --save-dev farrow-vite
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn add -D farrow-vite
+```
+
+</TabItem>
+</Tabs>
+
+## Usage
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install --save-dev vite farrow farrow-vite
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn add -D vite farrow farrow-vite
+```
+
+</TabItem>
+</Tabs>
+
+```typescript
+import path from 'path'
+import { Http } from 'farrow-http'
+import { vite } from 'farrow-vite'
+
+import { services } from './api'
+
+let http = Http()
+
+http.use(services)
+
+if (process.env.NODE_ENV === 'development') {
+  // set up vite-dev-server in development
+  http.use(vite())
+} else {
+  // serving the bundler output in production
+  http.serve('/', path.join(__dirname, '../dist/client'))
+}
+
+http.listen(3002, () => {
+  console.log('server started at http://localhost:3002')
+})
+```
+
+Add script in `package.json`
+
+```json
+{
+  "scripts": {
+    "dev": "farrow dev",
+    "build": "tsc && vite build && farrow build"
+  }
+}
+```
+
+## API
+
+### `vite`
+
+```typescript
+const vite: (options?: InlineConfig | undefined) => RouterPipeline
+```
+
+:::info
+* [InlineConfig](https://vitejs.dev/guide/api-javascript.html#inlineconfig)
+
+* [RouterPipeline](./02-farrow-http.mdx)
+:::
