@@ -70,4 +70,4 @@ We used the [deployment which the support to the Github Page](https://docusaurus
 $ GIT_USER=<Your GitHub username> yarn deploy
 ```
 
-and then the build output of this project will be committed to branch `release` of [Farrow-DOCS](https://github.com/farrow-js/farrow-docs). And Github Page will deploy to <https://farrow-js.github.io/farrow-docs/>.
+and then the build output of this project will be committed to branch `release`. And Page will deploy to <https://farrowjs.com>.
