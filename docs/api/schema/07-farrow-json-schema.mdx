@@ -4,3 +4,44 @@ authors: [tqma113]
 tags: []
 sidebar_position: 6
 ---
+
+Tool for Transforming [farrow-schema](./01-farrow-schema.mdx) to [json schema](https://json-schema.org/).
+
+
+## Usage
+
+```ts
+import { Int, Type } from 'farrow-schema'
+
+const definition = {
+  [Type]: Int,
+}
+
+const jsonSchema = transform(definition)
+/**
+    {
+      $id: '/farrow/schema',
+      $ref: '#/definitions/0',
+      definitions: {
+        0: {
+          $id: '0',
+          type: 'integer',
+        },
+      },
+    }
+ ** /
+```
+
+## Api
+
+**Type Signature:**
+
+```ts
+const transform: (input: FieldDescriptor) => JSONSchema7
+```
+
+## Learn more
+
+:::info Relative Module
+* [farrow-schema](./01-farrow-schema.mdx): Powerful and extensible schema builder library
+:::

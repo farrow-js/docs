@@ -4,3 +4,171 @@ authors: [tqma113]
 tags: []
 sidebar_position: 4
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+A deno server middleware.
+
+## Installation
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install farrow-deno-api
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn add farrow-deno-api
+```
+
+</TabItem>
+</Tabs>
+
+
+## Usage
+
+```ts
+// server
+import { Http } from 'farrow-http'
+import { DenoService } from from 'farrow-deno-api'
+
+// api definition
+...
+
+const entries = {
+  getCount,
+  setCount,
+  triggerError,
+}
+
+const CounterService = DenoService({
+  entries,
+})
+const http = Http()
+const server = http.server()
+
+http.route('/counter').use(CounterService)
+
+http.listen(3000)
+```
+
+```ts
+// client
+import { api } from 'http://localhost:3000/counter/client.ts'
+
+api.getCount({}).then(console.log)
+```
+
+## Options
+
+```ts
+type CreateDenoServiceOptions = {
+  entries: ApiEntries
+  namespace?: string
+  codegen?: CodegenOptions
+  transform?: (source: string) => string
+  format?: (source: string) => string
+}
+```
+
+### entries
+
+```ts
+entries: ApiEntries
+```
+
+[ApiEntries](https://github.com/Lucifier129/farrow/blob/master/packages/farrow-api/src/api.ts#L111)
+
+Set the api entries of all services.
+
+```ts
+import { DenoService } from from 'farrow-deno-api'
+
+const CounterService = DenoService({
+  entries,
+})
+```
+
+### namespace
+
+```ts
+namespace: string = 'client'
+```
+
+It affect the path of file in client. Like:
+
+```ts
+import { api } from 'http://localhost:3000/counter/client.ts'
+```
+
+```ts
+// server
+const CounterService = DenoService({
+  entries,
+  namespace: 'todo'
+})
+
+// client
+import { api } from 'http://localhost:3000/counter/todo.ts'
+```
+
+### codegen
+
+```ts
+codegen?: CodegenOptions
+```
+
+[CodegenOptions](https://github.com/Lucifier129/farrow/blob/master/packages/farrow-api/src/codegen.ts#L126)
+
+Set the code generation option.
+
+### transform
+
+```ts
+transform?: (source: string) => string
+```
+
+[transform](https://github.com/Lucifier129/farrow/blob/master/packages/farrow/src/api-client/index.ts#L51)
+
+Transform source code received from server, it's useful when need to attach custom code snippet
+
+```ts
+// server
+const CounterService = DenoService({
+  entries,
+  namespace: 'todo',
+  transform: (code) => code += `\nexport const test = 'test success'`
+})
+
+// client
+import { api, test } from 'http://localhost:3000/counter/todo.ts'
+test // 'test success'
+```
+
+### format
+
+```ts
+format?: (source: string) => string
+```
+
+[format](https://github.com/Lucifier129/farrow/blob/master/packages/farrow/src/api-client/index.ts#L55)
+
+Format source code via codegen. Could format with prettier.
+
+## Learn more
+
+:::info Relative Module
+* [farrow-api](./02-farrow-api.mdx): Schema-based Api builder
+* [farrow-api-server](./03-farrow-api-server.mdx): farrow-api adapter for farrow-http
+* [farrow-api-client](./04-farrow-api-client.mdx): an api-client for `farrow-api-server`
+* [farrow-http](../pipeline/02-farrow-http.mdx): A Type-Friendly Web Framework
+:::
+
+:::info Sample
+* [farrow-sample/06-deno-api](https://github.com/tqma113/farrow-sample/tree/main/samples/06-deno-api)
+:::
