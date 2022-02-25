@@ -8,7 +8,7 @@ sidebar_position: 0
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-Powerful and extensible schema builder library.
+Powerful and extensible schema builder library. Create Schema like type of [TypeSccript](https://www.typescriptlang.org/).
 
 ## Installation
 
@@ -62,9 +62,478 @@ type User = {
 
 ### Schema Builder
 
-### Validation
+#### Primitive
+
+- Usage
+
+```ts
+const V = Number;
+```
+
+| Schema              | Type               | Validation                           |
+| ------------------- | ------------------ | ------------------------------------ |
+| `const V = Number`  | `type V = number`  | `typeof V === 'number' && !isNaN(V)` |
+| `const V = String`  | `type V = string`  | `typeof V === 'string'`              |
+| `const V = Boolean` | `type V = boolean` | `typeof V === 'boolean'`             |
+| `const V = Date`    | `type V = Date`    | `Date.isDate(V)`                     |
+| `const V = ID`      | `type V = number`  | `typeof V === 'string'`              |
+| `const V = Int`     | `type V = number`  | `Number.isInteger(V)`                |
+| `const V = Float`   | `type V = number`  | `typeof V === 'number' && !isNaN(V)` |
+
+#### Literal
+
+- Usage
+
+```ts
+const V = Literal(Number Value | String Value | Boolean Value | Date Value);
+```
+
+| Schema                              | Type             | Validation    |
+| ----------------------------------- | ---------------- | ------------- |
+| `const V = Literal(0)`              | `type V = 0`     | `V === 0`     |
+| `const V = Literal("foo")`          | `type V = "foo"` | `V === "foo"` |
+| `const V = Literal(true)`           | `type V = true`  | `V === true`  |
+| `const V = Literal(C = new Date())` | `type V = Date`  | `V === C`     |
+
+#### List
+
+- Usage
+
+```ts
+const V = List($Schema);
+```
+
+- Example
+
+```ts
+// Schema
+const V = List(Number);
+
+// Type
+type V = Array<number>;
+
+// Validation
+Array.isArray(V) && V.every((c) => typeof c === "number" && !isNaN(c));
+```
+
+```ts
+// Schema
+const V = List(Literal(0));
+
+// Type
+type V = Array<0>;
+
+// Validation
+Array.isArray(V) && V.every((c) => c === 0);
+```
+
+```ts
+// Schema
+const V = List(
+  Struct({
+    id: ID,
+    name: String,
+  })
+);
+
+// Type
+type V = Array<{
+  id: string;
+  name: string;
+}>;
+
+// Validation
+Array.isArray(V) &&
+  V.every((c) => {
+    const cIsObject = typeof c === "object";
+    const idIsString = typeof c.id === "string";
+    const nameIsString = typeof c.name === "string";
+    return cIsObject && idIsString && nameIsString;
+  });
+```
+
+#### Struct
+
+- Usage
+
+```ts
+const FieldSchema = {
+  [key: string]: $Schema | $FieldSchema
+}
+const V = Struct($FieldSchema);
+```
+
+- Example
+
+```ts
+// Schema
+const V = Struct({
+  id: ID,
+  name: String,
+});
+
+// Type
+type V = {
+  id: string;
+  name: string;
+};
+
+// Validation
+const cIsObject = typeof V === "object";
+const idIsString = typeof V.id === "string";
+const nameIsString = typeof V.name === "string";
+cIsObject && idIsString && nameIsString;
+```
+
+```ts
+// Schema
+const V = Struct({
+  id: ID,
+  name: String,
+  artile: {
+    title: String,
+    description: String,
+  },
+});
+
+// Type
+type V = {
+  id: string;
+  name: string;
+  article: {
+    title: string;
+    description: string;
+  };
+};
+
+// Validation
+const cIsObject = typeof V === "object";
+const idIsString = typeof V.id === "string";
+const nameIsString = typeof V.name === "string";
+const articleIsObject = typeof V.article === "object";
+const titleIsString = typeof V.article.title === "string";
+const descriptionIsString = typeof V.article.description === "string";
+cIsObject &&
+  idIsString &&
+  nameIsString &&
+  articleIsObject &&
+  titleIsString &&
+  descriptionIsString;
+```
+
+:::caution
+
+Cannot construct recusive type. It will throw error if you make [recursive type](https://en.wikipedia.org/wiki/Recursive_data_type#:~:text=In%20computer%20programming%20languages%2C%20a,usually%20viewed%20as%20directed%20graphs.) with this.
+
+:::
+
+#### ObjectType
+
+- Usage
+
+```ts
+class V extends ObjectType {
+  $FieldSchema;
+  ...
+}
+```
+
+- Example
+
+```ts
+// Schema
+class V extends ObjectType {
+  id = ID;
+  name = String;
+}
+
+// Type
+type V = {
+  id: string;
+  name: string;
+};
+
+// Validation
+const vIsObject = typeof V === "object";
+const idIsString = typeof V.id === "string";
+const nameIsString = typeof V.name === "string";
+vIsObject && idIsString && nameIsString;
+```
+
+```ts
+// Schema
+class V extends ObjectType {
+  value = Number;
+  next = Nullable(V);
+}
+
+// Type
+type V = {
+  value: number;
+  next: V | undefined;
+};
+
+// Validation
+const vIsObject = typeof V === "object";
+const vauleIsNumber = typeof V.id === "number";
+const nextIsVOrUndefined = V.name === undefined || V.next is V;
+vIsObject && vauleIsNumber && nextIsVOrUndefined;
+```
+
+:::info
+
+It can construct [recursive type](https://en.wikipedia.org/wiki/Recursive_data_type#:~:text=In%20computer%20programming%20languages%2C%20a,usually%20viewed%20as%20directed%20graphs.).
+
+But it must be a `Nullable`.
+
+:::
+
+#### Meta
+
+```ts
+const V = Null;
+```
+
+| Schema                | Type                 | Validation                      |
+| --------------------- | -------------------- | ------------------------------- |
+| `const V = Null`      | `type V = null`      | `V === null`                    |
+| `const V = Undefined` | `type V = undefined` | `V === undefined`               |
+| `const V = Any`       | `type V = any`       | `true`                          |
+| `const V = Unknown`   | `type V = Unknown`   | `true`                          |
+| `const V = Json`      | `type V = JsonType`  | `JSON.parse(JSON.stringify(V))` |
+
+#### Generic
+
+- `Union`
+
+```ts
+const V = Union($Schema, $Schema);
+```
+
+- `Intersect`
+
+```ts
+const V = Intersect($Schema, $Schema);
+```
+
+- `Tuple`
+
+```ts
+const V = Tuple(...$Schema[]);
+```
+
+- `Record`
+
+```ts
+const V = Record($Schema);
+```
+
+- `Nullable`
+
+```ts
+const V = Nullable($Schema);
+```
+
+- `Strict`
+
+```ts
+const V = Strict($Schema);
+```
+
+- `NonStrict`
+
+```ts
+const V = NonStrict($Schema);
+```
+
+- `ReadOnly`
+
+```ts
+const V = ReadOnly($Schema);
+```
+
+- `ReadOnlyDeep`
+
+```ts
+const V = ReadOnlyDeep($Schema);
+```
+
+Declaration
+
+```ts
+const Foo = Struct({ foo: String });
+const Bar = Struct({ bar: Number });
+const Baz = Struct({ foo: { bar: String } });
+```
+
+| Schema                                        | Type                                                  | Validation                                                                               |
+| --------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `const V = Union(String, Number)`             | `type V = string \| number`                           | `V is string \|\| V is number`                                                           |
+| `const V = Intersect(Foo, Bar)`               | `type V = { foo: string } && { bar: number }`         |                                                                                          |
+| `const V = Tuple(String, Number, Literal(0))` | `type V = [string, number, 0]`                        | `Array.isArray(V) && typeof V[0] === "string" && typeof V[1] === "number" && V[2] === 0` |
+| `const V = Record(Number)`                    | `type V = Record<string, number>`                     |                                                                                          |
+| `const V = Strict(Foo)`                       | `type V = { foo: string }`                            |                                                                                          |
+| `const V = NonStrict(Foo)`                    | `type V = { foo: string }`                            |                                                                                          |
+| `const V = ReadOnly(Foo)`                     | `type V = { readonly foo: string }`                   |                                                                                          |
+| `const V = ReadOnly(Baz)`                     | `type V = { readonly foo: { bar: string } }`          |                                                                                          |
+| `const V = ReadOnlyDeep(Baz)`                 | `type V = { readonly foo: { readonly bar: string } }` |                                                                                          |
+
+#### Util
+
+- `pick`
+
+```ts
+const V = pick(C = $Struct | $ObjectType, $keyof C);
+```
+
+- `omit`
+
+```ts
+const V = omit(C = $Struct | $ObjectType, $keyof C);
+```
+
+- `keyof`
+
+```ts
+const V = keyof($Struct | $ObjectType);
+```
+
+- `partial`
+
+```ts
+const V = partial($Struct | $ObjectType);
+```
+
+Declaration
+
+```ts
+const Foo = Struct({ foo0: String, foo1: Number });
+const Bar = Struct({ bar0: String, bar1: Number });
+```
+
+| Schema                        | Type                                        | Validation |
+| ----------------------------- | ------------------------------------------- | ---------- |
+| `const V = pick(Foo, "foo0")` | `type V = { foo0: string }`                 |            |
+| `const V = pick(Bar, "bar0")` | `type V = { bar0: string }`                 |            |
+| `const V = omit(Foo, "foo0")` | `type V = { foo1: number }`                 |            |
+| `const V = omit(Bar, "bar0")` | `type V = { bar1: number }`                 |            |
+| `const V = keyof(Foo)`        | `type V = "foo0" \| "foo1"`                 |            |
+| `const V = keyof(Bar)`        | `type V = "bar0" \| "bar1"`                 |            |
+| `const V = partial(Foo)`      | `type V = { foo0?: string, foo1?: number }` |            |
+| `const V = partial(Bar)`      | `type V = { bar0?: string, bar1?: number }` |            |
+
+### Formatter
+
+#### formatSchema
+
+**Type Signature:**
+
+```ts
+const formatSchema: <T extends S.SchemaCtor<S.Schema>>(
+  Ctor: T,
+  context?: FormatContext | undefined
+) => {
+  typeId: number;
+  types: FormatTypes;
+};
+
+type FormatContext = {
+  addType: (type: FormatType) => number;
+  formatCache: WeakMap<Function, number>;
+};
+```
+
+**Example Usage:**
+
+```ts
+const result = formatSchema(Number)
+
+// alternative
+{
+  typeId: 0,
+  types: {
+    '0': {
+      type: 'Scalar',
+      valueType: 'number',
+      valueName: 'Number',
+    },
+  },
+}
+```
+
+### Validator
+
+#### createSchemaValidator
+
+**Type Signature:**
+
+```ts
+const createSchemaValidator: <S extends S.SchemaCtor<S.Schema>>(
+  SchemaCtor: S,
+  options?: ValidatorOptions | undefined
+) => (input: unknown) => ValidationResult<S.TypeOf<S>>;
+```
+
+**Example Usage:**
+
+```ts
+import { ID, Struct } from "farrow-schema";
+import { Validator } from "farrow-schema/validator";
+
+const User = Struct({
+  id: ID,
+  name: String,
+});
+
+const result = Validator.validate(User, {
+  id: "foo",
+  name: "foo name",
+});
+
+if (result.isOk) {
+  console.log(result.value);
+}
+```
 
 ### Type Infer
+
+#### `TypeOf`
+
+- Usage
+
+```
+type T = TypeOf<typeof $Schema>
+```
+
+- Example
+
+```ts
+type T = TypeOf<typeof Number>;
+
+// alternative
+type T = number;
+```
+
+```ts
+type T = TypeOf<typeof List(Number)>;
+
+// alternative
+type T = number[];
+```
+
+```ts
+type T = TypeOf<typeof Union(Number, String)>;
+
+// alternative
+type T = number | string;
+```
+
+```ts
+type T = TypeOf<typeof Struct({ foo: String })>;
+
+// alternative
+type T = { foo: string };
+```
 
 ## Learn more
 
@@ -79,12 +548,7 @@ type User = {
 
 :::info Sample
 
-- [farrow-sample/01-pipeline-base](https://github.com/tqma113/farrow-sample/tree/main/samples/01-pipeline-base): Base usage of **farrow-pipeline**.
-- [farrow-sample/02-pipeline-more](https://github.com/tqma113/farrow-sample/tree/main/samples/02-pipeline-more): More compelex sample of **farrow-pipeline**.
-  :::
-
-:::info Another tools
-
-- [@modern-js/plugin](https://github.com/modern-js-dev/modern.js/tree/main/packages/toolkit/plugin)
+- [farrow-sample/03-schema-base](https://github.com/tqma113/farrow-sample/tree/main/samples/03-schema-base): Base usage of **farrow-pipeline**.
+- [farrow-sample/04-schema-more](https://github.com/tqma113/farrow-sample/tree/main/samples/04-schema-more): More compelex sample of **farrow-pipeline**.
 
 :::
