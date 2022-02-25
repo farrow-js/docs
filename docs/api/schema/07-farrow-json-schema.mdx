@@ -1,12 +1,33 @@
 ---
 title: farrow-json-schema
 authors: [tqma113]
-tags: []
+tags: [Schema, JSON]
 sidebar_position: 6
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 Tool for Transforming [farrow-schema](./01-farrow-schema.mdx) to [json schema](https://json-schema.org/).
 
+## Installation
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install farrow-json-schema
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn add farrow-json-schema
+```
+
+</TabItem>
+</Tabs>
 
 ## Usage
 
@@ -37,11 +58,13 @@ const jsonSchema = transform(definition)
 **Type Signature:**
 
 ```ts
-const transform: (input: FieldDescriptor) => JSONSchema7
+const transform: (input: FieldDescriptor) => JSONSchema7;
 ```
 
 ## Learn more
 
 :::info Relative Module
-* [farrow-schema](./01-farrow-schema.mdx): Powerful and extensible schema builder library.
+
+- [farrow-schema](./01-farrow-schema.mdx): Powerful and extensible schema builder library.
+
 :::

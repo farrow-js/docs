@@ -1,12 +1,12 @@
 ---
 title: farrow-cors
 authors: [tqma113]
-tags: []
+tags: [HTTP, CORS]
 sidebar_position: 2
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 Cross-Origin Resource Sharing(CORS) for **farrow-http**.
 
@@ -35,37 +35,37 @@ yarn add farrow-cors
 ## Usage
 
 ```ts
-import { Http, Response } from 'farrow-http'
-import { cors } from 'farrow-cors'
+import { Http, Response } from "farrow-http";
+import { cors } from "farrow-cors";
 
-const http = Http()
+const http = Http();
 
-http.use(cors())
+http.use(cors());
 
 http
   .match({
-    pathname: '/product/:id',
+    pathname: "/product/:id",
     params: {
       id: Number,
     },
   })
   .use(() => {
-    return Response.json({ msg: 'This is CORS-enabled for all origins!' })
-  })
+    return Response.json({ msg: "This is CORS-enabled for all origins!" });
+  });
 
 http.listen(80, function () {
-  console.log('CORS-enabled web server listening on port 80')
-})
+  console.log("CORS-enabled web server listening on port 80");
+});
 ```
 
 ## Options
 
 See [expressjs/cors](https://github.com/expressjs/cors).
 
-
 ## Learn More
 
 :::info Relative Module
-* [farrow-http](./02-farrow-http.mdx): A Type-Friendly Web Framework
-* [expressjs/cors](https://github.com/expressjs/cors): Node.js CORS middleware
-:::
+
+- [farrow-http](./02-farrow-http.mdx): A Type-Friendly Web Framework
+- [expressjs/cors](https://github.com/expressjs/cors): Node.js CORS middleware
+  :::

@@ -1,14 +1,14 @@
 ---
 title: farrow-express
 authors: [tqma113]
-tags: []
+tags: [HTTP, Adapter]
 sidebar_position: 3
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
-import { Card } from 'antd';
+import { Card } from "antd";
 
 Adapter for `farrow-http` in [Express](https://github.com/expressjs/express) app.
 
@@ -31,89 +31,95 @@ yarn add farrow-express
 </TabItem>
 </Tabs>
 
-**Type Signature:**
-
-```ts
-const adapter: (httpPipeline: HttpPipeline) => RequestHandler
-```
-
 ## Usage
 
 Create a `farrow-http` app first:
 
 ```ts
-import { Http } from 'farrow-http'
+import { Http } from "farrow-http";
 
-const http = Http()
+const http = Http();
 
 http
   .match({
-    pathname: '/test',
+    pathname: "/test",
   })
   .use((data) => {
-    return Response.text(JSON.stringify(data))
-  })
+    return Response.text(JSON.stringify(data));
+  });
 ```
 
 And then create a **Express** app:
 
 ```ts
-import express from 'express'
+import express from "express";
 
-const PORT = 3000
+const PORT = 3000;
 
-const app = express()
+const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
 app.listen(PORT, () => {
-  console.log(`Example app listening at http://localhost:${PORT}`)
-})
+  console.log(`Example app listening at http://localhost:${PORT}`);
+});
 ```
 
 and combine them:
 
 ```ts
-import express from 'express'
-import { Http, Response } from 'farrow-http'
-import { adapter } from 'farrow-express'
+import express from "express";
+import { Http, Response } from "farrow-http";
+import { adapter } from "farrow-express";
 
-const PORT = 3000
+const PORT = 3000;
 
-const http = Http()
+const http = Http();
 
 http
   .match({
-    pathname: '/test',
+    pathname: "/test",
   })
   .use((data) => {
-    return Response.text(JSON.stringify(data))
-  })
+    return Response.text(JSON.stringify(data));
+  });
 
-const app = express()
+const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
-app.use('/farrow', adapter(http))
+app.use("/farrow", adapter(http));
 
 app.listen(PORT, () => {
-  console.log(`Example app listening at http://localhost:${PORT}`)
-})
+  console.log(`Example app listening at http://localhost:${PORT}`);
+});
 ```
 
 Then, you can use work with farrow stack under route path `/farrow` in a **Express** app.
 
+## API
+
+**Type Signature:**
+
+```ts
+const adapter: (httpPipeline: HttpPipeline) => RequestHandler;
+```
+
 ## Learn more
 
 :::info Relative Module
-* [farrow-http](./02-farrow-http.mdx): A Type-Friendly Web Framework.
-* [farrow-koa](./05-farrow-koa.mdx): Adapter for `farrow-http` in **[Koa](https://github.com/koajs/koa)** app.
+
+- [farrow-http](./02-farrow-http.mdx): A Type-Friendly Web Framework.
+- [farrow-koa](./05-farrow-koa.mdx): Adapter for `farrow-http` in **[Koa](https://github.com/koajs/koa)** app.
+
 :::
 
 :::info Sample
-* [farrow-sample/17-http-express](https://github.com/tqma113/farrow-sample/tree/main/samples/17-http-express): HTTP Server sample with [Express](https://github.com/expressjs/express).
+
+- [farrow-sample/17-http-express](https://github.com/tqma113/farrow-sample/tree/main/samples/17-http-express): HTTP Server sample with [Express](https://github.com/expressjs/express).
+
 :::

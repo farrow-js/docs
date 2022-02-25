@@ -1,12 +1,12 @@
 ---
 title: farrow
 authors: [tqma113]
-tags: []
+tags: [CLI, Bundler, Development]
 sidebar_position: 0
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 Useful modules for developing and bundling farrow app.
 
@@ -83,11 +83,11 @@ For define the behaviour of farrow, you need to create `farrow.config.js` file i
 Take a look at the following `farrow.config.js` example:
 
 ```js
-const { defineConfig } = require('farrow')
+const { defineConfig } = require("farrow");
 
 module.exports = defineConfig({
   /* config options here */
-})
+});
 ```
 
 Also support TypeScript
@@ -104,9 +104,9 @@ It has the type:
 
 ```ts
 export type Config = {
-  server?: ServerBundlerOptions | ServerBundlerOptions[] | false
-  api?: ApiClientOptions | ApiClientOptions[] | false
-}
+  server?: ServerBundlerOptions | ServerBundlerOptions[] | false;
+  api?: ApiClientOptions | ApiClientOptions[] | false;
+};
 ```
 
 ### `server`
@@ -115,54 +115,58 @@ The config of server app(s).
 
 ```ts
 export type ServerBundlerOptions = {
-  entry?: string
-  src?: string
-  dist?: string
-  nodeArgs?: string[]
-  env?: NodeJS.ProcessEnv
-  esbuild?: Omit<BuildOptions, 'entryPoints' | 'outdir' | 'outbase'>
-  autoExternal?: boolean
-}
+  entry?: string;
+  src?: string;
+  dist?: string;
+  nodeArgs?: string[];
+  env?: NodeJS.ProcessEnv;
+  esbuild?: Omit<BuildOptions, "entryPoints" | "outdir" | "outbase">;
+  autoExternal?: boolean;
+};
 ```
 
-* `entry`
+- `entry`
 
 Entry of app. Default `index.ts`.
 
-* `src`
+- `src`
 
 Folder of source code. Default `./src`.
 
-* `dist`
+- `dist`
 
 Folder of output code. Default `./dist`.
 
-* `nodeArgs`
+- `nodeArgs`
 
 For creating the config value. eg. `{ NODE_ENV: 'production' }`.
 
-* `env`
+- `env`
 
 Env value for Node.js. eg. `{ NODE_ENV: 'production' }`, `NODE_ENV = production` in `farrow start`, `NODE_ENV = development` in `farrow dev`.
 
-* `esbuild`
+- `esbuild`
 
 Options for esbuild.
 
-* `autoExternal`
+- `autoExternal`
 
 Auto add closest package.json dependenties to esbuild external or not.
 
 ### `api`
 
-Args for Node.js. 
+Args for Node.js.
 
 ## Learn more
 
 :::info Relative Module
-* [farrow-http](../pipeline/02-farrow-http.mdx): A Type-Friendly Web Framework.
+
+- [farrow-http](../pipeline/02-farrow-http.mdx): A Type-Friendly Web Framework.
+
 :::
 
 :::info Sample
-* [farrow-sample](https://github.com/tqma113/farrow-sample): Samples for farrow.
+
+- [farrow-sample](https://github.com/tqma113/farrow-sample): Samples for farrow.
+
 :::

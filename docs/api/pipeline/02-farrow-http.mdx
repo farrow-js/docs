@@ -1,7 +1,7 @@
 ---
 title: farrow-http
 authors: [tqma113]
-tags: []
+tags: [HTTP, Pipeline, Server]
 sidebar_position: 1
 ---
 
@@ -699,7 +699,7 @@ Response.empty();
 
 #### `Response.attachment`
 
-Set attachment response header.
+Set attachment response header. It is different from [`Response.file`](#responsefile).
 
 [Content-Disposition](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition)
 
@@ -1034,6 +1034,8 @@ http.route("/base1").use(() => {
   return Response.json({ prefix });
 });
 ```
+
+## Learn more
 
 :::info Relative Module
 

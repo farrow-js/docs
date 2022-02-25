@@ -2,12 +2,12 @@
 slug: /tutorial/rpc-server
 title: Start with RPC Server
 authors: [tqma113]
-tags: []
+tags: [RPC, Server]
 sidebar_position: 3
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 Farrow also support the RPC-like server services. It focus on providing type friendly, validation for JSON value. It will service as the middleware of [Farrow HTTP Server](./http-server.mdx).
 
@@ -35,37 +35,40 @@ yarn add farrow-schema farrow farrow-api farrow-api-server
 Creating the Schema of greeting API.
 
 ```ts
-import { Struct } from 'farrow-schema';
+import { Struct } from "farrow-schema";
 
 // input schema
 const GreetingInput = Struct({
-  name: String
-})
+  name: String,
+});
 
 // output schema
 const GreetingOutput = Struct({
-  greeting: String
-})
+  greeting: String,
+});
 ```
 
 Construct the API with input schema, output schema and the calling handler.
 
 ```ts
-import { Api } from 'farrow-api';
+import { Api } from "farrow-api";
 
-const greeting = Api({
-  input: GreetingInput,
-  output: GreetingOutput
-}, (input) => {
-  const greeting = `Hello ${input.name}!`;
-  return { greeting };
-})
+const greeting = Api(
+  {
+    input: GreetingInput,
+    output: GreetingOutput,
+  },
+  (input) => {
+    const greeting = `Hello ${input.name}!`;
+    return { greeting };
+  }
+);
 ```
 
 Combine APIs into Service.
 
 ```ts
-import { ApiService } from 'farrow-api-server';
+import { ApiService } from "farrow-api-server";
 
 export const GreetingService = ApiService({
   entries: {
@@ -77,7 +80,7 @@ export const GreetingService = ApiService({
 Add the service to HTTP Server.
 
 ```ts
-http.route('/api/greeting').use(GreetingService);
+http.route("/api/greeting").use(GreetingService);
 ```
 
 For now, open Farrow Playground and connect the service.
@@ -112,7 +115,7 @@ You also can send the request with [Postman](https://www.postman.com/). But the 
   "path": ["greeting"],
   "input": {
     "name": "foo"
-  },
+  }
 }
 ```
 
@@ -167,30 +170,30 @@ yarn add -D farrow
 Creating `farrow.config.js`.
 
 ```js title="farrow.config.js"
-const { createFarrowConfig } = require('farrow')
+const { createFarrowConfig } = require("farrow");
 
 module.exports = createFarrowConfig({
   api: [
     {
-      src: 'http://localhost:3000/api/greeting',
+      src: "http://localhost:3000/api/greeting",
       dist: `${__dirname}/src/api/greeting.ts`,
     },
   ],
-})
+});
 ```
 
 Add `farrow dev` to `start` script in `package.json`, and run it. The calling code for client will be generated to `/src/api/greeting.ts`Call it in React Component.
 
 ```ts
-import { api } from './api/greeting'
+import { api } from "./api/greeting";
 
 // ...
 
 useEffect(() => {
-  api.greeting({ name: 'foo' }).then(({ greeting }) => {
-    console.log(greeting)
-  })
-}, [])
+  api.greeting({ name: "foo" }).then(({ greeting }) => {
+    console.log(greeting);
+  });
+}, []);
 ```
 
 Open the SPA page in browser, you will see the request and the consoled greeting message.

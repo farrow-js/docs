@@ -1,12 +1,12 @@
 ---
 title: farrow-react
 authors: [tqma113]
-tags: []
+tags: [HTTP, React]
 sidebar_position: 5
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 React adapter for [farrow-http](./02-farrow-http.mdx).
 
@@ -40,49 +40,49 @@ For rendering React Element to Response of **farrow-http**.
 ```ts
 const useReactView: (options?: ReactViewOptions | undefined) => {
   render: <T extends JSX.Element>(element: T) => Http.Response;
-}
+};
 ```
 
 #### Usage
 
 ```tsx
-import { Http } from 'farrow-http'
-import { useReactView } from 'farrow-react'
+import { Http } from "farrow-http";
+import { useReactView } from "farrow-react";
 
-const PORT = 3000
+const PORT = 3000;
 
-const http = Http()
+const http = Http();
 
 http.use(async (req) => {
   const ReactView = useReactView({
-    docType: '<!doctype html>',
+    docType: "<!doctype html>",
     useStream: true,
-  })
+  });
 
-  const element = <div>Hello Farrow</div>
+  const element = <div>Hello Farrow</div>;
 
-  return ReactView.render(html)
-})
+  return ReactView.render(html);
+});
 
 app.listen(PORT, () => {
-  console.log(`Example app listening at http://localhost:${PORT}`)
-})
+  console.log(`Example app listening at http://localhost:${PORT}`);
+});
 ```
 
 #### Options
 
 ```ts
 export type ReactResponseOptions = {
-  docType?: string
-}
+  docType?: string;
+};
 export type ReactViewOptions = ReactResponseOptions & {
-  useStream?: boolean
-}
+  useStream?: boolean;
+};
 ```
 
-* `docType`
+- `docType`
 
-Type: 
+Type:
 
 ```ts
 docType?: string
@@ -92,7 +92,7 @@ For setting [html doc type](https://developer.mozilla.org/en-US/docs/Glossary/Do
 
 Default: `"<!doctype html>"`
 
-* `useStream`
+- `useStream`
 
 Type:
 
@@ -109,17 +109,17 @@ Default: `false`
 #### Type
 
 ```ts
-const usePrefix: () => string
+const usePrefix: () => string;
 ```
 
 #### Usage
 
 ```tsx
-import { usePrefix } from 'farrow-react/hooks'
+import { usePrefix } from "farrow-react/hooks";
 const Test = () => {
-  const prefix = usePrefix()
-  return <div>{prefix}</div>
-}
+  const prefix = usePrefix();
+  return <div>{prefix}</div>;
+};
 ```
 
 ### `useRenderContext`
@@ -128,19 +128,19 @@ const Test = () => {
 
 ```ts
 export type ReactRenderContext = {
-  basenames: string[]
-}
+  basenames: string[];
+};
 
-const useRenderContext: () => ReactRenderContext
+const useRenderContext: () => ReactRenderContext;
 ```
 
 #### Usage
 
 ```tsx
 const Test = () => {
-  let renderContext = useRenderContext()
-  return <div>{renderContext.basenames.join('')}</div>
-}
+  let renderContext = useRenderContext();
+  return <div>{renderContext.basenames.join("")}</div>;
+};
 ```
 
 ### `Link`
@@ -148,27 +148,31 @@ const Test = () => {
 #### Type
 
 ```ts
-const Link: (props: React.ComponentPropsWithoutRef<'a'>) => JSX.Element
+const Link: (props: React.ComponentPropsWithoutRef<"a">) => JSX.Element;
 ```
 
 #### Usage
 
 ```tsx
-import { Link } from 'farrow-react/Link'
+import { Link } from "farrow-react/Link";
 
 const Test = () => {
   // Link's props is equal to <a />
-  return <Link href="/">a link</Link>
-}
+  return <Link href="/">a link</Link>;
+};
 ```
 
 ## Learn more
 
 :::info Relative Module
-* [farrow-http](./02-farrow-http.mdx): A Type-Friendly Web Framework.
-* [react](https://reactjs.org/): A JavaScript library for building user interfaces.
+
+- [farrow-http](./02-farrow-http.mdx): A Type-Friendly Web Framework.
+- [react](https://reactjs.org/): A JavaScript library for building user interfaces.
+
 :::
 
 :::info Sample
-* [tqma/me](https://github.com/tqma113/me/blob/main/start.ts)
+
+- [tqma/me](https://github.com/tqma113/me/blob/main/start.ts)
+
 :::

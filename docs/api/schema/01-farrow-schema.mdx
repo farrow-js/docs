@@ -1,8 +1,90 @@
 ---
 title: farrow-schema
 authors: [tqma113]
-tags: []
+tags: [Schema]
 sidebar_position: 0
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 Powerful and extensible schema builder library.
+
+## Installation
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install farrow-schema
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn add farrow-schema
+```
+
+</TabItem>
+</Tabs>
+
+## Usage
+
+```ts
+import { Struct, ID, TypeOf } from "farrow-schema";
+import { Validator } from "farrow-schema/validator";
+
+const user = Struct({
+  id: ID,
+  name: String,
+});
+
+const result = Validator.validate(User, {
+  id: "foo",
+  name: "foo name",
+});
+
+if (result.isOk) {
+  console.log(result.value);
+}
+
+type User = TypeOf<typeof User>;
+
+// 相同类型
+type User = {
+  id: string;
+  name: string;
+};
+```
+
+## API
+
+### Schema Builder
+
+### Validation
+
+### Type Infer
+
+## Learn more
+
+:::info Relative Module
+
+- [farrow-api](./02-farrow-api.mdx): Schema-based Api builder.
+- [farrow-api-server](./03-farrow-api-server.mdx): [farrow-api](./02-farrow-api.mdx) adapter for [farrow-http](../pipeline/02-farrow-http.mdx).
+- [farrow-http](../pipeline/02-farrow-http.mdx): A Type-Friendly Web Framework based on **farrow-pipeline**.
+- [farrow-json-schema](./07-farrow-json-schema.mdx): Tool for Transforming **farrow-schema** to [json schema](https://json-schema.org/).
+
+:::
+
+:::info Sample
+
+- [farrow-sample/01-pipeline-base](https://github.com/tqma113/farrow-sample/tree/main/samples/01-pipeline-base): Base usage of **farrow-pipeline**.
+- [farrow-sample/02-pipeline-more](https://github.com/tqma113/farrow-sample/tree/main/samples/02-pipeline-more): More compelex sample of **farrow-pipeline**.
+  :::
+
+:::info Another tools
+
+- [@modern-js/plugin](https://github.com/modern-js-dev/modern.js/tree/main/packages/toolkit/plugin)
+
+:::

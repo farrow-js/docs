@@ -1,12 +1,12 @@
 ---
 title: farrow-federation
 authors: [tqma113]
-tags: []
+tags: [HTTP, Federation, Server]
 sidebar_position: 5
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 A aggregation tool for **farrow-api**.
 
@@ -34,22 +34,22 @@ yarn add farrow-federation
 ## Frist Look
 
 ```ts
-import { Http } from 'farrow-http'
-import { Federation } from 'farrow-federation'
+import { Http } from "farrow-http";
+import { Federation } from "farrow-federation";
 
-const http = Http()
+const http = Http();
 
 const service = await Federation([
   {
     // anthor farrow-api-server entry
-    url: 'http://localhost:3001/api/todo',
-    namespace: 'todo',
+    url: "http://localhost:3001/api/todo",
+    namespace: "todo",
   },
-])
+]);
 
-http.use(service)
+http.use(service);
 
-http.listen(3000)
+http.listen(3000);
 ```
 
 In this demo, the federation service only group one service that is at http://localhost:3001/api/todo. But as you might expect, it can group more service created by farrow-api-service. It also be a service, so it can group themselves.
@@ -58,11 +58,11 @@ In this demo, the federation service only group one service that is at http://lo
 
 ```ts
 export type ApiService = {
-  url: string
-  namespace: string
-}
+  url: string;
+  namespace: string;
+};
 
-export type ApiServices = ApiService[]
+export type ApiServices = ApiService[];
 ```
 
 this option for you to pass the all service you want to get together.
@@ -126,7 +126,7 @@ Default: `process.env.NODE_ENV !== 'production'`.
 ### strict
 
 ```ts
-strict: true
+strict: true;
 ```
 
 Should throw error when connect to services or not.
@@ -138,11 +138,15 @@ Suggestion: `false` in development, `true` in production.
 ## Learn more
 
 :::info Relative Module
-* [farrow-api](./02-farrow-api.mdx): Schema-based Api builder.
-* [farrow-api-server](./03-farrow-api-server.mdx): farrow-api adapter for farrow-http.
-* [farrow-api-client](./04-farrow-api-client.mdx): an api-client for `farrow-api-server`.
+
+- [farrow-api](./02-farrow-api.mdx): Schema-based Api builder.
+- [farrow-api-server](./03-farrow-api-server.mdx): farrow-api adapter for farrow-http.
+- [farrow-api-client](./04-farrow-api-client.mdx): an api-client for `farrow-api-server`.
+
 :::
 
 :::info Sample
-* [farrow-sample/13-api-federation](https://github.com/tqma113/farrow-sample/tree/main/samples/13-api-federatio)
+
+- [farrow-sample/13-api-federation](https://github.com/tqma113/farrow-sample/tree/main/samples/13-api-federatio)
+
 :::

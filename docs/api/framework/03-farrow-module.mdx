@@ -1,16 +1,17 @@
 ---
 title: farrow-module
 authors: [tqma113]
-tags: []
+tags: [Effect, Injection]
 sidebar_position: 2
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 A module abstraction providing dependencies management.
 
 :::info Glossary
+
 - `Module`:
 
   - Any `Class` which `extends Module`
@@ -30,6 +31,7 @@ A module abstraction providing dependencies management.
   - Any `Class` which `extends Container`
   - it's the entry of our code of `modules`
   - it should be instantiated by the `new` keyword
+
 :::
 
 ## Installation
@@ -91,55 +93,55 @@ baz.bar.getFoo() // 1
 
 It is a class. It has some method.
 
-* `use`
+- `use`
 
   Used for adding `Provider` or another `Module`
 
   ```ts
-  const foo = createProvider(0)
+  const foo = createProvider(0);
 
   class Bar extends Module {
-    foo = this.use(foo)
+    foo = this.use(foo);
   }
 
   class Baz extends Module {
-    bar = this.use(Bar)
+    bar = this.use(Bar);
   }
   ```
 
-* `inject`
+- `inject`
 
   Used for inject new value for a `Provider`
 
   ```ts
   // default value is `0`
-  const foo = createProvider(0)
+  const foo = createProvider(0);
 
   class Bar extends Module {
-    foo = this.use(foo)
+    foo = this.use(foo);
   }
 
   class Baz extends Container {
     // new value is `1`
-    foo =  this.inject(foo.provide(1))
+    foo = this.inject(foo.provide(1));
 
-    bar = this.new(Bar)
+    bar = this.new(Bar);
   }
   ```
 
-* `new`
+- `new`
 
   Used for create `new` another `Module` in current `Module`.
 
   ```ts
-  const foo = createProvider(0)
+  const foo = createProvider(0);
 
   class Bar extends Module {
-    foo = this.use(foo)
+    foo = this.use(foo);
   }
 
   class Baz extends Container {
-    bar = this.new(Bar)
+    bar = this.new(Bar);
   }
   ```
 
@@ -152,78 +154,91 @@ It extends from `Module`. And do not have any another method.
 This is the example to manage the restful client.
 
 ```ts
-import { createProvider, Module } from 'farrow-module'
+import { createProvider, Module } from "farrow-module";
 
-export const fetchProvider = createProvider<typeof fetch>()
+export const fetchProvider = createProvider<typeof fetch>();
 
-export const protocolProvider = createProvider<string>('http')
-export const hostProvider = createProvider<string>('localhost')
-export const portProvider = createProvider<string>('3000')
-export const basenameProvider = createProvider<string>('')
-export const headersProvider = createProvider<Record<string, string>>({})
+export const protocolProvider = createProvider<string>("http");
+export const hostProvider = createProvider<string>("localhost");
+export const portProvider = createProvider<string>("3000");
+export const basenameProvider = createProvider<string>("");
+export const headersProvider = createProvider<Record<string, string>>({});
 
 export class RestfulClient extends Module {
-  fetch = this.use(fetchProvider)
+  fetch = this.use(fetchProvider);
 
-  protocol = this.use(protocolProvider)
-  host = this.use(hostProvider)
-  port = this.use(portProvider)
-  basename = this.use(basenameProvider)
+  protocol = this.use(protocolProvider);
+  host = this.use(hostProvider);
+  port = this.use(portProvider);
+  basename = this.use(basenameProvider);
 
-  headers = this.use(headersProvider)
+  headers = this.use(headersProvider);
 
   post = (input: RequestInfo, data: object, init?: RequestInit) => {
-    return this.fetch(this.resolveInput(input), this.resolveInit({
-      ...init,
-      body: JSON.stringify(data),
-      headers: {
-        'Context-Type': 'application/json'
-      },
-      method: 'POST',
-    }))
-  }
+    return this.fetch(
+      this.resolveInput(input),
+      this.resolveInit({
+        ...init,
+        body: JSON.stringify(data),
+        headers: {
+          "Context-Type": "application/json",
+        },
+        method: "POST",
+      })
+    );
+  };
 
-  get = (input: RequestInfo, query?: Record<string, string>, init?: RequestInit) => {
-    let search = ''
+  get = (
+    input: RequestInfo,
+    query?: Record<string, string>,
+    init?: RequestInit
+  ) => {
+    let search = "";
     if (query) {
-      const searchParams = new URLSearchParams(query)
-      search = `?${searchParams.toString()}`
+      const searchParams = new URLSearchParams(query);
+      search = `?${searchParams.toString()}`;
     }
 
-    return this.fetch(this.resolveInput(`${input}?${search}`), this.resolveInit({
-      ...init,
-      method: 'GET',
-    }))
-  }
+    return this.fetch(
+      this.resolveInput(`${input}?${search}`),
+      this.resolveInit({
+        ...init,
+        method: "GET",
+      })
+    );
+  };
 
   put = (input: RequestInfo, data?: object, init?: RequestInit) => {
-    return this.fetch(this.resolveInput(input), this.resolveInit({
-      ...init,
-      body: JSON.stringify(data),
-      headers: {
-        'Context-Type': 'application/json'
-      },
-      method: 'PUT',
-    }))
-  }
+    return this.fetch(
+      this.resolveInput(input),
+      this.resolveInit({
+        ...init,
+        body: JSON.stringify(data),
+        headers: {
+          "Context-Type": "application/json",
+        },
+        method: "PUT",
+      })
+    );
+  };
 
   private resolveInput(input: RequestInfo): RequestInfo {
-    if (typeof input === 'string') {
-      if (input.startsWith('http') || input.startsWith('https')) {
-        return input
+    if (typeof input === "string") {
+      if (input.startsWith("http") || input.startsWith("https")) {
+        return input;
       }
 
-      if (input.startsWith('//')) {
-        return `${this.protocol}:${input}`
+      if (input.startsWith("//")) {
+        return `${this.protocol}:${input}`;
       }
 
-      if (input.startsWith('/')) {
-        return `${this.protocol}://${this.host}:${this.port}${this.basename}${input}`
+      if (input.startsWith("/")) {
+        return `${this.protocol}://${this.host}:${this.port}${this.basename}${input}`;
       }
 
-      return `${this.protocol}://${this.host}:${this.port}${this.basename}/${input}`
+      return `${this.protocol}://${this.host}:${this.port}${this.basename}/${input}`;
     } else {
-      return input
+      return input;
     }
   }
 
@@ -233,25 +248,27 @@ export class RestfulClient extends Module {
         ...init,
         headers: {
           ...this.headers,
-          ...init.headers
-        }
-      }
+          ...init.headers,
+        },
+      };
     } else {
       return {
-        headers: this.headers
-      }
+        headers: this.headers,
+      };
     }
   }
 }
 
-const restfulClient = new RestfulClient()
+const restfulClient = new RestfulClient();
 
-const res0 = await restfulClient.get('/foo')
-const res1 = await restfulClient.post('/bar', { bar: 'bar' })
+const res0 = await restfulClient.get("/foo");
+const res1 = await restfulClient.post("/bar", { bar: "bar" });
 ```
 
 ## Learn more
 
 :::info Sample
-* [farrow-sample/24-module-todo](https://github.com/tqma113/farrow-sample/tree/main/samples/24-module-todo)
+
+- [farrow-sample/24-module-todo](https://github.com/tqma113/farrow-sample/tree/main/samples/24-module-todo)
+
 :::

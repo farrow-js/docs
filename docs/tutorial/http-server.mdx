@@ -2,7 +2,7 @@
 slug: /tutorial/http-server
 title: Start with HTTP Server
 authors: [tqma113]
-tags: []
+tags: [HTTP, Server]
 sidebar_position: 2
 ---
 
@@ -31,8 +31,8 @@ As you saw, the response information is set by returning [`Response` object](../
 ```ts
 http.use(({ pathname }, next) => {
   return Response.json({
-    message: 'Hello Farrow',
-    pathname
+    message: "Hello Farrow",
+    pathname,
   });
 });
 ```
@@ -79,15 +79,15 @@ Farrow has provided the [`Router`](/docs/tutorial/http-server#todo) to support g
 ```ts
 import { Http, Router, Response } from "farrow-http";
 
-const todo = Router()
+const todo = Router();
 
-todo.get('/list').use(/** */)
-todo.post('/add').use(/** */)
-todo.put('/clear').use(/** */)
+todo.get("/list").use(/** */);
+todo.post("/add").use(/** */);
+todo.put("/clear").use(/** */);
 
 const http = Http();
 
-http.route('/todo').use(todo)
+http.route("/todo").use(todo);
 ```
 
 :::info
@@ -99,19 +99,19 @@ If you want to know the design philosophy about Farrow HTTP Server, see [Why new
 Using **Farrow** in other HTTP Server is very easy. In Express, you can add Farrow app by adapter.
 
 ```ts
-const http = Http()
+const http = Http();
 
 http
   .match({
-    pathname: '/test',
+    pathname: "/test",
   })
   .use((data) => {
-    return Response.text(JSON.stringify(data))
-  })
+    return Response.text(JSON.stringify(data));
+  });
 
-const app = express()
+const app = express();
 
-app.use('/farrow', adapter(http))
+app.use("/farrow", adapter(http));
 ```
 
 :::info

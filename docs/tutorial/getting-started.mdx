@@ -2,12 +2,12 @@
 slug: /tutorial
 title: Getting Started
 authors: [tqma113]
-tags: []
+tags: [Tutorial, Start]
 sidebar_position: 1
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 ## Overview
 
@@ -15,17 +15,17 @@ Welcome to the Farrow documentation!
 
 Farrow(Functional and arrow, pronounced `/ˈferō/`) is a Type-Friendly Web Framework for Node.js. It consists of three major parts:
 
-* Type-Friendly HTTP Server.
-* Type-Friendly and End-to-end code generational RPC Server.
-* Full stack famework for a web project.
+- Type-Friendly HTTP Server.
+- Type-Friendly and End-to-end code generational RPC Server.
+- Full stack famework for a web project.
 
 If you have questions about anything related to Farrow, you're always welcome to ask our community on [GitHub Discussions](https://github.com/farrow-js/farrow/discussions).
 
 #### System Requirements
 
-* [Node.js 14.18.1](https://nodejs.org) or later
-* [TypeScript 4.3.0](https://www.typescriptlang.org) or higher（Can be installed with scaffolding if farrow is not introduced in an existing project）
-* MacOS, Windows (including WSL), and Linux are supported
+- [Node.js 14.18.1](https://nodejs.org) or later
+- [TypeScript 4.3.0](https://www.typescriptlang.org) or higher（Can be installed with scaffolding if farrow is not introduced in an existing project）
+- MacOS, Windows (including WSL), and Linux are supported
 
 ## Setup
 
@@ -74,17 +74,17 @@ yarn add farrow-http
 Create `src/index.ts` as entry and add the following content
 
 ```ts title="src/index.ts"
-import { Http, Response } from 'farrow-http'
+import { Http, Response } from "farrow-http";
 
-const http = Http()
+const http = Http();
 
 http.use(() => {
-  return Response.text('Hello Farrow')
-})
+  return Response.text("Hello Farrow");
+});
 
 http.listen(3000, () => {
-  console.log('server started at http://localhost:3000')
-})
+  console.log("server started at http://localhost:3000");
+});
 ```
 
 Install development tools

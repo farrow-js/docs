@@ -1,6 +1,73 @@
 ---
 title: farrow-next-server
 authors: [tqma113]
-tags: []
+tags: [Adapter]
 sidebar_position: 4
 ---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+An adapter of [Next.js](https://nextjs.org/) for [farrow-http](../pipeline/02-farrow-http.mdx).
+
+## Installation
+
+<Tabs groupId="package-tool">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install farrow-next-server next farrow-http
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```bash
+yarn add farrow-next-server next farrow-http
+```
+
+</TabItem>
+</Tabs>
+
+## Usage
+
+```ts
+import { Http } from "farrow-http";
+import { next } from "farrow-next-server";
+
+const http = Http();
+
+http.use(next());
+
+http.listen(3000);
+```
+
+## API
+
+**Type Signature:**
+
+```ts
+const next: (options?: Partial<Options> | undefined) => NextRouterPipeline;
+
+type NextRouterPipeline = RouterPipeline & {
+  app: NextServer;
+};
+
+type NextServer = ReturnType<typeof createNextServer>;
+```
+
+## Learn more
+
+:::info Relative Module
+
+- [Next.js](https://nextjs.org/): The React Framework for Production.
+- [farrow-http](../pipeline/02-farrow-http): A Type-Friendly Web Framework.
+
+:::
+
+:::info Sample
+
+- [next-app](https://github.com/farrow-js/farrow/tree/master/examples/next-app)
+- [farrow-sample/11-next-react](https://github.com/tqma113/farrow-sample/blob/main/samples/11-next-react)
+
+:::
