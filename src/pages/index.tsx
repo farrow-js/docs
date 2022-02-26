@@ -80,7 +80,7 @@ export default function Home() {
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
-      description="Type-safe asymptotic TypeScript full-stack framework."
+      description="Type-safe progressive TypeScript full-stack framework."
     >
       <header className={styles.header}>
         <div className={clsx('container', styles.container)}>
