@@ -2,7 +2,7 @@
 title: farrow-api
 authors: [tqma113]
 tags: [Schema, API]
-sidebar_position: 1
+sidebar_position: 0
 ---
 
 import Tabs from "@theme/Tabs";
@@ -31,7 +31,7 @@ yarn add farrow-api
 
 ## Usage
 
-Writing **farrow-api** is just like typing in a higher-order way, we define a api-type via [farrow-schema](./01-farrow-schema.mdx). And then use [farrow-api-server](./03-farrow-api-server.mdx) to attach api to a HTTP server.
+Writing **farrow-api** is just like typing in a higher-order way, we define a api-type via [farrow-schema](../general/02-farrow-schema.mdx). And then use [farrow-api-server](./02-farrow-api-server.mdx) to attach api to a HTTP server.
 
 ### Simple
 
@@ -245,7 +245,7 @@ const result = toJSON({
 
 ### codegen
 
-Code generation for client with `farrow-api-client`.
+Code generation for client with [farrow-api-client](./03-farrow-api-client.mdx).
 
 **Type Signature:**
 
@@ -333,9 +333,9 @@ const newEntries = controvertEntries(toJSON(entries));
 
 :::info Relative Module
 
-- [farrow-schema](./01-farrow-schema.mdx): Powerful and extensible schema builder library. Create Schema like type of [TypeSccript](https://www.typescriptlang.org/).
-- [farrow-api-server](./03-farrow-api-server.mdx): [farrow-api](./02-farrow-api.mdx) adapter for [farrow-http](../pipeline/02-farrow-http.mdx).
-- [farrow-api-client](./04-farrow-api-client.mdx): An api-client for [farrow-api-server](./03-farrow-api-server.mdx).
+- [farrow-schema](../general/02-farrow-schema.mdx): Powerful and extensible schema builder library. Create Schema like type of [TypeSccript](https://www.typescriptlang.org/).
+- [farrow-api-server](./02-farrow-api-server.mdx): [farrow-api](./01-farrow-api.mdx) adapter for [farrow-http](../http/01-farrow-http.mdx).
+- [farrow-api-client](./03-farrow-api-client.mdx): An api-client for [farrow-api-server](./02-farrow-api-server.mdx).
 
 :::
 

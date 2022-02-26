@@ -2,13 +2,13 @@
 title: farrow-api-client
 authors: [tqma113]
 tags: [Schema, API, Client]
-sidebar_position: 3
+sidebar_position: 2
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-An client for [farrow-api-server](./03-farrow-api-server.mdx).
+An client for [farrow-api-server](./02-farrow-api-server.mdx).
 
 ## Installation
 
@@ -31,7 +31,7 @@ yarn add farrow-api-client
 
 ## Usage
 
-Using [farrow](../framework/01-farrow.mdx) to codegen the code for client, and config apiPipeline if needed.
+Using [farrow](../cli/01-farrow.mdx) to codegen the code for client, and config apiPipeline if needed.
 
 Simply, we can `import` the file via codegen directly without modification.
 
@@ -343,10 +343,10 @@ Used for CORS.
 
 :::info Relative Module
 
-- [farrow-schema](./01-farrow-schema.mdx): Powerful and extensible schema builder library. Create Schema like type of [TypeSccript](https://www.typescriptlang.org/).
-- [farrow-api](./02-farrow-api.mdx): Schema-based Api builder.
-- [farrow-api-server](./03-farrow-api-server.mdx): [farrow-api](./02-farrow-api.mdx) adapter for [farrow-http](../pipeline/02-farrow-http.mdx).
-- [farrow-federation](./06-farrow-federation.mdx): A aggregation tool for [farrow-api](./02-farrow-api.mdx).
+- [farrow-schema](../general/02-farrow-schema.mdx): Powerful and extensible schema builder library. Create Schema like type of [TypeSccript](https://www.typescriptlang.org/).
+- [farrow-api](./01-farrow-api.mdx): Schema-based Api builder.
+- [farrow-api-server](./02-farrow-api-server.mdx): [farrow-api](./01-farrow-api.mdx) adapter for [farrow-http](../http/01-farrow-http.mdx).
+- [farrow-federation](./05-farrow-federation.mdx): A aggregation tool for [farrow-api](./01-farrow-api.mdx).
 
 :::
 

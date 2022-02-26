@@ -2,7 +2,7 @@
 title: farrow-http
 authors: [tqma113]
 tags: [HTTP, Pipeline, Server]
-sidebar_position: 1
+sidebar_position: 0
 ---
 
 import Tabs from "@theme/Tabs";
@@ -49,7 +49,7 @@ http.listen(3000);
 
 ### Router
 
-Router factory for `farrow-http`. It extends from `Pipeline` in [farrow-pipeline](./01-farrow-pipeline.mdx). So there are all api in `Pipeline`.
+Router factory for `farrow-http`. It extends from `Pipeline` in [farrow-pipeline](../general/01-farrow-pipeline.mdx). So there are all api in `Pipeline`.
 
 **Type Signature:**
 
@@ -115,7 +115,7 @@ type MatchOptions = {
 ```
 
 :::info
-learn more about Schema Builder from [farrow-schema](../schema/01-farrow-schema.mdx).
+learn more about Schema Builder from [farrow-schema](../general/02-farrow-schema.mdx).
 :::
 
 **Example Usage:**
@@ -1039,12 +1039,12 @@ http.route("/base1").use(() => {
 
 :::info Relative Module
 
-- [farrow-pipeline](./01-farrow-pipeline.mdx): Type-Friendly middleware library.
-- [farrow-cors](./03-farrow-cors.mdx): Cross-Origin Resource Sharing(CORS) for **farrow-http**.
-- [farrow-express](./04-farrow-express.mdx): Adapter for `farrow-http` in [Express](https://github.com/expressjs/express) app.
-- [farrow-koa](./05-farrow-koa.mdx): Adapter for `farrow-http` in **[Koa](https://github.com/koajs/koa)** app.
-- [farrow-react](./06-farrow-react.mdx): React adapter for **farrow-http**.
-- [farrow-vite](./07-farrow-vite.mdx): Vite adapter for **farrow-http**.
+- [farrow-pipeline](../general/01-farrow-pipeline.mdx): Type-Friendly middleware library.
+- [farrow-cors](./02-farrow-cors.mdx): Cross-Origin Resource Sharing(CORS) for **farrow-http**.
+- [farrow-express](./03-farrow-express.mdx): Adapter for `farrow-http` in [Express](https://github.com/expressjs/express) app.
+- [farrow-koa](./04-farrow-koa.mdx): Adapter for `farrow-http` in **[Koa](https://github.com/koajs/koa)** app.
+- [farrow-react](./05-farrow-react.mdx): React adapter for **farrow-http**.
+- [farrow-vite](./06-farrow-vite.mdx): Vite adapter for **farrow-http**.
 
 :::
 

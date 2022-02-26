@@ -7,7 +7,7 @@
 
 .header {
   align-items: center;
-  background-color: var(--ifm-hero-background-color);
+  background-color: var(--ifm-color-primary);
   color: var(--ifm-hero-text-color);
   display: flex;
   padding: 4rem 0;
@@ -51,10 +51,10 @@
   }
 
   .buttons {
-    padding: 0!important;
+    padding: 0 !important;
   }
   .titlecontainer {
-    padding: 0!important;
+    padding: 0 !important;
   }
 }
 

@@ -2,7 +2,7 @@
 title: farrow-schema
 authors: [tqma113]
 tags: [Schema]
-sidebar_position: 0
+sidebar_position: 1
 ---
 
 import Tabs from "@theme/Tabs";
@@ -284,7 +284,11 @@ vIsObject && vauleIsNumber && nextIsVOrUndefined;
 
 `ObjectType` can construct [recursive type](https://en.wikipedia.org/wiki/Recursive_data_type#:~:text=In%20computer%20programming%20languages%2C%20a,usually%20viewed%20as%20directed%20graphs.).
 
-But it must be a `Nullable`.
+:::
+
+:::note
+
+One point to note about recursive type is that the constructed schema cannot be infinitely recursive, and there are three main ways to interrupt infinite recursion: option, lazy, and reference, while in farrow-schema, it is mainly by way of option. Nullable, List can do it.
 
 :::
 
@@ -668,10 +672,10 @@ type T = { foo: string };
 
 :::info Relative Module
 
-- [farrow-api](./02-farrow-api.mdx): Schema-based Api builder.
-- [farrow-api-server](./03-farrow-api-server.mdx): [farrow-api](./02-farrow-api.mdx) adapter for [farrow-http](../pipeline/02-farrow-http.mdx).
-- [farrow-http](../pipeline/02-farrow-http.mdx): A Type-Friendly Web Framework based on **farrow-pipeline**.
-- [farrow-json-schema](./07-farrow-json-schema.mdx): Tool for Transforming **farrow-schema** to [json schema](https://json-schema.org/).
+- [farrow-api](../rpc/01-farrow-api.mdx): Schema-based Api builder.
+- [farrow-api-server](../rpc/02-farrow-api-server.mdx): [farrow-api](../rpc/01-farrow-api.mdx) adapter for [farrow-http](../http/01-farrow-http.mdx).
+- [farrow-http](../http/01-farrow-http.mdx): A Type-Friendly Web Framework based on **farrow-pipeline**.
+- [farrow-json-schema](../cli/03-farrow-json-schema.mdx): Tool for Transforming **farrow-schema** to [json schema](https://json-schema.org/).
 
 :::
 

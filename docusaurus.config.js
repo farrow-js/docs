@@ -1,42 +1,41 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require("prism-react-renderer/themes/github");
+const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Farrow',
-  tagline: 'Type-safe asymptotic TypeScript full-stack framework',
-  url: 'https://farrowjs.netlify.app',
-  baseUrl: '/',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  title: "Farrow",
+  tagline: "Type-safe progressive TypeScript full-stack framework",
+  url: "https://farrowjs.netlify.app",
+  baseUrl: "/",
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
+  favicon: "img/Farrow.blue.bg.png",
 
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'zh-cn'],
+    defaultLocale: "en",
+    locales: ["en", "zh-cn"],
   },
 
   presets: [
     [
-      '@docusaurus/preset-classic',
+      "@docusaurus/preset-classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
-          editUrl: 'https://github.com/farrow-js/docs/',
+          editUrl: "https://github.com/farrow-js/docs/",
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
-          editUrl:
-            'https://github.com/farrow-js/docs/',
+          editUrl: "https://github.com/farrow-js/docs/",
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
         },
       }),
     ],
@@ -46,71 +45,71 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'Farrow',
+        title: "Farrow",
         logo: {
-          alt: 'Farrow Logo',
-          src: 'img/Farrow.blue.bg.png',
+          alt: "Farrow Logo",
+          src: "img/Farrow.white.full.png",
         },
         items: [
-          {to: '/docs/tutorial', label: 'Tutorial', position: 'right'},
-          {to: '/docs/guide', label: 'Guide', position: 'right'},
-          {to: '/docs/api', label: 'API', position: 'right'},
-          {to: '/docs/philosophy', label: 'Philosophy', position: 'right'},
-          {to: '/blog', label: 'Blog', position: 'right'},
+          { to: "/docs/tutorial", label: "Tutorial", position: "right" },
+          { to: "/docs/guide", label: "Guide", position: "right" },
+          { to: "/docs/api", label: "API", position: "right" },
+          { to: "/docs/philosophy", label: "Philosophy", position: "right" },
+          { to: "/blog", label: "Blog", position: "right" },
           {
-            type: 'localeDropdown',
-            position: 'right',
+            type: "localeDropdown",
+            position: "right",
           },
           {
-            href: 'https://github.com/farrow-js/farrow',
-            label: 'GitHub',
-            position: 'right',
+            href: "https://github.com/farrow-js/farrow",
+            label: "GitHub",
+            position: "right",
           },
         ],
       },
       footer: {
-        style: 'dark',
+        style: "dark",
         links: [
           {
-            title: 'Docs',
+            title: "Docs",
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/tutorial',
+                label: "Tutorial",
+                to: "/docs/tutorial",
               },
               {
-                label: 'Guide',
-                to: '/docs/guide',
+                label: "Guide",
+                to: "/docs/guide",
               },
               {
-                label: 'API',
-                to: '/docs/api',
+                label: "API",
+                to: "/docs/api",
               },
             ],
           },
           {
-            title: 'Community',
+            title: "Community",
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/farrow',
+                label: "Stack Overflow",
+                href: "https://stackoverflow.com/questions/tagged/farrow",
               },
               {
-                label: 'Twitter',
-                href: 'https://twitter.com/guyingjie129',
+                label: "Twitter",
+                href: "https://twitter.com/guyingjie129",
               },
             ],
           },
           {
-            title: 'More',
+            title: "More",
             items: [
               {
-                label: 'GitHub',
-                href: 'https://github.com/Lucifier129/farrow',
+                label: "GitHub",
+                href: "https://github.com/Lucifier129/farrow",
               },
               {
-                label: 'Blog',
-                href: 'https://farrow-js.github.io/docs/blog',
+                label: "Blog",
+                href: "https://farrow-js.github.io/docs/blog",
               },
             ],
           },
