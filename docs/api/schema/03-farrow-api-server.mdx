@@ -31,6 +31,153 @@ yarn add farrow-api-server
 
 ## Usage
 
+[farrow-api](./02-farrow-api.mdx) just defining API, it's not directly bind to a server.
+
+**farrow-api-server** can convert an `api-entries` to a router of [farrow-http](../pipeline/02-farrow-http.mdx).
+
+In servier-side, we define api/service via [farrow-api](./02-farrow-api.mdx), and attach them to [farrow-http](../pipeline/02-farrow-http.mdx).
+
+Integrate api:
+
+```typescript
+// /src/api/todo.ts
+import { ApiService } from "farrow-api-server";
+
+// assuming addTodo/removeTodo is defined
+
+// combine all api to an object/entries
+export const entries = {
+  addTodo,
+  removeTodo,
+};
+
+// create service router
+export const service = ApiService({
+  entries,
+});
+```
+
+Attach to [farrow-http](../pipeline/02-farrow-http.mdx):
+
+```typescript
+// /src/api/index.ts
+import { Response, Router } from "farrow-http";
+// import todo-service
+import { service as TodoService } from "./todo";
+
+export const services = Router();
+
+// capture all json response and do something if needed
+services.capture("json", (body) => {
+  if (typeof body.value === "object") {
+    return Response.json({
+      ...body.value,
+      // ...others
+    });
+  }
+  return Response.json(body.value);
+});
+
+// attach todo api to services
+services.route("/api/todo").use(TodoService);
+
+// attach user api to services if existed
+// services.route('/api/user').use(UserService)
+```
+
+```typescript
+import path from "path";
+import { Http } from "farrow-http";
+import { vite } from "farrow-vite";
+
+import { services } from "./api";
+
+let http = Http();
+
+// attach services to http
+http.use(services);
+
+http.listen(3000, () => {
+  console.log("server started at http://localhost:3002");
+});
+```
+
+In client-side, for consuming data we need to use [farrow-api-client](../farrow-api-client/README.md).
+
+```typescript
+// import file codegened by farrow
+import { api as TodoApi } from "../api/todo";
+
+const main = async () => {
+  // invoke api
+  let result = await TodoApi.addTodo({
+    content: "todo content",
+  });
+};
+```
+
 ## API
 
+### createApiService
+
+**Type Signature:**
+
+```ts
+const createApiService: (options: CreateApiServiceOptions) => ApiServiceType;
+type CreateApiServiceOptions = {
+  entries: ApiEntries;
+  errorStack?: boolean;
+  introspection?: boolean;
+};
+```
+
+**Example Usage:**
+
+```ts
+import { ApiService } from "farrow-api-server";
+
+// combine all api to an object/entries
+export const entries = {
+  addTodo,
+  removeTodo,
+};
+
+const service = ApiService({
+  entries,
+});
+```
+
+**Options:**
+
+- `entries: ApiEntries;`
+
+  Api entries.
+
+- `errorStack?: boolean;`
+
+  Should display `error.stack` or not. It will be true if process.env.NODE_ENV === 'production' by default.
+
+- `introspection?: boolean;`
+
+  Should open [introspection](https://graphql.org/learn/introspection/) feature or not. It will be true if process.env.NODE_ENV === 'production' by default.
+
 ## Learn more
+
+:::info Relative Module
+
+- [farrow-schema](./01-farrow-schema.mdx): Powerful and extensible schema builder library. Create Schema like type of [TypeSccript](https://www.typescriptlang.org/).
+- [farrow-api](./02-farrow-api.mdx): Schema-based Api builder.
+- [farrow-api-client](./04-farrow-api-client.mdx): An client for [farrow-api-server](./03-farrow-api-server.mdx).
+- [farrow-deno-api](./05-farrow-deno-api.mdx): A deno server middleware.
+- [farrow-federation](./06-farrow-federation.mdx): A aggregation tool for [farrow-api](./02-farrow-api.mdx).
+
+:::
+
+:::info Sample
+
+- [farrow-sample/06-deno-api](https://github.com/tqma113/farrow-sample/tree/main/samples/06-deno-api): Sample of deno api.
+- [farrow-sample/13-api-federation](https://github.com/tqma113/farrow-sample/tree/main/samples/13-api-federation): Sample for api federation.
+- [farrow-sample/14-api-todo-app](https://github.com/tqma113/farrow-sample/tree/main/samples/14-api-todo-app): Todo App with **farrow-api**.
+- [farrow-sample/23-api-todo](https://github.com/tqma113/farrow-sample/tree/main/samples/23-api-todo): A template for farrow with rpc api.
+
+:::

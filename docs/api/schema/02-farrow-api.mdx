@@ -31,6 +31,318 @@ yarn add farrow-api
 
 ## Usage
 
+Writing **farrow-api** is just like typing in a higher-order way, we define a api-type via [farrow-schema](./01-farrow-schema.mdx). And then use [farrow-api-server](./03-farrow-api-server.mdx) to attach api to a HTTP server.
+
+### Simple
+
+Work single.
+
+```ts
+import { Api } from "farrow-api";
+
+const add = Api({
+  input: { a: Number, b: Number },
+  output: Number,
+});
+
+const result = Api.run({ a: 1, b: 2 }); // 3
+```
+
+### Complete
+
+Work with HTTP Server.
+
+```typescript
+import { Api } from "farrow-api";
+import { Int, List, ObjectType, Type, TypeOf } from "farrow-schema";
+
+/**
+ * define Todo
+ */
+export class Todo extends ObjectType {
+  id = {
+    description: `Todo id`,
+    [Type]: Int,
+  };
+
+  content = {
+    description: "Todo content",
+    [Type]: String,
+  };
+
+  completed = {
+    description: "Todo status",
+    [Type]: Boolean,
+  };
+}
+
+// infer the type of Todo
+export type TodoType = TypeOf<Todo>;
+
+// define Todos
+export const Todos = List(Todo);
+
+// define AddTodoInput
+export class AddTodoInput extends ObjectType {
+  content = {
+    description: "a content of todo for creating",
+    [Type]: String,
+  };
+}
+
+// define AddTodoInput
+export class AddTodoOutput extends ObjectType {
+  todos = {
+    description: "Todo list",
+    [Type]: Todos,
+  };
+}
+
+// define an api via input schema and output schema
+export const addTodo = Api(
+  {
+    description: "add todo",
+    input: AddTodoInput,
+    output: AddTodoOutput,
+  },
+  (input) => {
+    // impl addTodo
+    return {
+      todos: [],
+    };
+  }
+);
+
+// define RemoveTodoInput
+export class RemoveTodoInput extends ObjectType {
+  id = {
+    description: "Todo id for removing",
+    [Type]: Int,
+  };
+}
+
+// define RemoveTodoOutput
+export class RemoveTodoOutput extends ObjectType {
+  todos = {
+    description: "Remain todo list",
+    [Type]: Todos,
+  };
+}
+
+// define an api without impl
+export const removeTodo = Api({
+  description: "remove todo",
+  input: RemoveTodoInput,
+  output: RemoveTodoOutput,
+});
+
+// an api is also a pipeline
+removeTodo.use((input, next) => {
+  return next(input);
+});
+
+// impl remove todo via pipeline.use
+removeTodo.use((input) => {
+  state.todos = state.todos.filter((todo) => todo.id !== input.id);
+  return {
+    todos: state.todos,
+  };
+});
+
+// combine all api to an object/entries
+export const entries = {
+  addTodo,
+  removeTodo,
+};
+```
+
 ## API
 
+### createApi
+
+Creator of Farrow API.
+
+**Type Signature:**
+
+```ts
+function createApi<T extends ApiDefinition<any, any>>(
+  definition: T,
+  impl?: ApiImpl<T> | undefined
+): ApiType<T>;
+
+export type ApiDefinition<
+  Input extends SchemaCtorInput = any,
+  Output extends SchemaCtorInput = any
+> = {
+  // input schema of api
+  input: Typeable<Input>;
+
+  // output schema of api
+  output: Typeable<Output>;
+
+  // description of api
+  description?: string;
+
+  // depcreated info of api if needed
+  deprecated?: string;
+};
+```
+
+**Example Usage:**
+
+```ts
+import { Api } from "farrow-api";
+
+const add = Api({
+  input: { a: Number, b: Number },
+  output: Number,
+});
+
+const result = Api.run({ a: 1, b: 2 }); // 3
+```
+
+### toJSON
+
+Transform API to JSON.
+
+**Type Signature:**
+
+```ts
+const toJSON: (apiEntries: ApiEntries) => FormatResult;
+
+type ApiEntries = {
+  [key: string]: ApiType | ApiEntries;
+};
+
+type FormatResult = {
+  protocol: "Farrow-API";
+  types: FormatTypes;
+  entries: FormatEntries;
+};
+```
+
+**Example Usage:**
+
+```ts
+import { Api } from "farrow-api";
+import { toJSON } from "farrow-api/dist/toJSON";
+
+const incre = Api({
+  input: Number,
+  output: Number,
+});
+
+const decre = Api({
+  input: Number,
+  output: Number,
+});
+
+const result = toJSON({
+  incre,
+  decre,
+});
+```
+
+### codegen
+
+Code generation for client with `farrow-api-client`.
+
+**Type Signature:**
+
+```ts
+const codegen: (
+  formatResult: FormatResult,
+  options?: CodegenOptions | undefined
+) => string;
+
+export type CodegenOptions = {
+  /**
+   * emit createApiClient or not
+   * if set to false, only types will be codegen
+   */
+  emitApiClient?: boolean;
+
+  /**
+   * a remote address or alias to invoke
+   */
+  url?: string;
+
+  /**
+   * add ts-nocheck or not
+   */
+  noCheck?: boolean | string;
+};
+```
+
+**Example Usage:**
+
+```ts
+import { Api } from "farrow-api";
+import { toJSON } from "farrow-api/dist/toJSON";
+import { codegen } from "farrow-api/dist/codegen";
+
+const incre = Api({
+  input: Number,
+  output: Number,
+});
+
+const decre = Api({
+  input: Number,
+  output: Number,
+});
+const formatResult = toJSON(entries);
+
+const source = codegen(formatResult, {
+  noCheck: "just for testing",
+});
+```
+
+### controvertEntries
+
+#### controvertEntries
+
+Controvert JSON to Farrow API
+
+**Type Signature:**
+
+```ts
+const controvertEntries: (input: FormatResult) => ApiEntries;
+```
+
+**Example Usage:**
+
+```ts
+const incre = Api(
+  {
+    input: Int,
+    output: Int,
+  },
+  (input: number): number => {
+    return input + 1;
+  }
+);
+
+const entries: ApiEntries = {
+  incre,
+};
+
+const newEntries = controvertEntries(toJSON(entries));
+```
+
 ## Learn more
+
+:::info Relative Module
+
+- [farrow-schema](./01-farrow-schema.mdx): Powerful and extensible schema builder library. Create Schema like type of [TypeSccript](https://www.typescriptlang.org/).
+- [farrow-api-server](./03-farrow-api-server.mdx): [farrow-api](./02-farrow-api.mdx) adapter for [farrow-http](../pipeline/02-farrow-http.mdx).
+- [farrow-api-client](./04-farrow-api-client.mdx): An api-client for [farrow-api-server](./03-farrow-api-server.mdx).
+
+:::
+
+:::info Sample
+
+- [farrow-sample/10-api-base](https://github.com/tqma113/farrow-sample/tree/main/samples/10-api-base): Sample of **farrow-api**.
+- [farrow-sample/14-api-todo-app](https://github.com/tqma113/farrow-sample/tree/main/samples/14-api-todo-app): Todo App with **farrow-api**.
+- [farrow-sample/23-api-todo](https://github.com/tqma113/farrow-sample/tree/main/samples/23-api-todo): A template for farrow with rpc api.
+
+:::

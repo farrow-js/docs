@@ -8,7 +8,7 @@ sidebar_position: 3
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-An api-client for [farrow-api-server](./03-farrow-api-server.mdx).
+An client for [farrow-api-server](./03-farrow-api-server.mdx).
 
 ## Installation
 
@@ -31,6 +31,330 @@ yarn add farrow-api-client
 
 ## Usage
 
+Using [farrow](../framework/01-farrow.mdx) to codegen the code for client, and config apiPipeline if needed.
+
+Simply, we can `import` the file via codegen directly without modification.
+
+If we need to touch request/response, there are two ways.
+
+The first way only affects one url.
+
+```typescript
+import { apiPipeline } from "../api/todo";
+
+/**
+ * farrow-api-client is based on farrow-pipeline
+ * use pipeline.use(middleware) to do something you want
+ */
+apiPipeline.use(async (request, next) => {
+  // add extra fileds for post requeset body
+  let body = {
+    ...request.body,
+    token: "abc",
+  };
+
+  // add extra headers for post request
+  let options: RequestInit = {
+    headers: {
+      "x-access-token": "abc",
+    },
+  };
+
+  // pass new request to next and await for the response
+  let response = await next({
+    ...request,
+    body,
+    options,
+  });
+
+  // handle the response if needed
+  return response;
+});
+```
+
+The second way only affects all URLs.
+
+```typescript
+import { apiPipeline } from "farrow-api-client";
+
+// all request performed via farrow-api-client will come here
+// it should be handled carefully
+apiPipeline.use(async (request, next) => {
+  let response = await next(request);
+  return response;
+});
+
+/**
+ * match(string | regexp, middleware)
+ * match the request url and handle it via farrow-pipeline
+ * if pass a string, it will be matched by url.endsWith(pattern)
+ * if pass a regexp, it will be matched by pattern.test(url)
+ */
+apiPipeline.match("/todo", async (request, next) => {
+  // add extra fileds for post requeset body
+  let body = {
+    ...request.body,
+    token: "abc",
+  };
+
+  // add extra headers for post request
+  let options: RequestInit = {
+    headers: {
+      "x-access-token": "abc",
+    },
+  };
+
+  // pass new request to next and await for the response
+  let response = await next({
+    ...request,
+    body,
+    options,
+  });
+
+  // handle the response if needed
+  return response;
+});
+```
+
 ## API
 
+### createApiPipeline
+
+**Type Signature:**
+
+```ts
+const createApiPipeline: ({ fetcher }?: ApiPipelineOptions) => ApiPipeline;
+
+type ApiPipeline = AsyncPipeline<ApiRequest, ApiResponse> & {
+  match(
+    pattern: string | RegExp,
+    middleware: MiddlewareInput<ApiRequest, MaybeAsync<ApiResponse>>
+  ): void;
+  invoke(
+    url: string,
+    calling: SingleCalling,
+    options?: ApiInvokeOptions
+  ): Promise<JsonType | Error>;
+  invoke(
+    url: string,
+    calling: BatchCalling,
+    options?: ApiInvokeOptions
+  ): Promise<(JsonType | Error)[]>;
+  invoke(
+    url: string,
+    calling: Calling,
+    options?: ApiInvokeOptions
+  ): Promise<JsonType | Error | (JsonType | Error)[]>;
+  setFetcher(newFetcher: Fetcher): void;
+};
+
+export type ApiPipelineOptions = {
+  // custom fetcher
+  fetcher?: Fetcher;
+};
+```
+
+**Example Usage:**
+
+```ts
+import { createApiPipeline } from 'farrow-api-client'
+
+cconst apiPipeline = createApiPipeline()
+```
+
+#### `apiPipeline.invoke`
+
+**Type Signature:**
+
+```ts
+invoke(url: string, calling: SingleCalling, options?: ApiInvokeOptions): Promise<JsonType | Error>
+invoke(url: string, calling: BatchCalling, options?: ApiInvokeOptions): Promise<(JsonType | Error)[]>
+invoke(url: string, calling: Calling, options?: ApiInvokeOptions): Promise<JsonType | Error | (JsonType | Error)[]>
+
+type ApiInvokeOptions = {
+  fetcher?: Fetcher
+}
+```
+
+**Example Usage:**
+
+```ts
+const result = await apiPipeline.invoke("http://localhost:3000/api", {
+  type: "Single",
+  path: ["getTodo"],
+  input: {},
+});
+```
+
+```ts
+const result = await apiPipeline.invoke("http://localhost:3000/api", {
+  type: "Batch",
+  callings: [
+    {
+      type: "Single",
+      path: ["getTodo"],
+      input: {},
+    },
+    {
+      type: "Single",
+      path: ["getUser"],
+      input: {},
+    },
+  ],
+});
+```
+
+```ts
+const result = await apiPipeline.invoke("http://localhost:3000/api", {
+  type: "Introspection",
+});
+```
+
+```ts
+const result = await apiPipeline.invoke(
+  "http://localhost:3000/api",
+  {
+    type: "Single",
+    path: ["getTodo"],
+    input: {},
+  },
+  { fetcher: customFetcher }
+);
+```
+
+**Options:**
+
+- `fetcher?: Fetcher`
+
+  Custom fetcher.
+
+#### `apiPipeline.setFetcher`
+
+Custom fetcher.
+
+**Type Signature:**
+
+```ts
+setFetcher(newFetcher: Fetcher): void
+```
+
+**Example Usage:**
+
+```ts
+apiPipeline.setFetcher(customFetcher);
+```
+
+#### `apiPipeline.match`
+
+Mocking data fro client.
+
+**Type Signature:**
+
+```ts
+match(pattern: string | RegExp, middleware: MiddlewareInput<ApiRequest, MaybeAsync<ApiResponse>>): void
+```
+
+**Example Usage:**
+
+```ts
+api.match("/api.foo", () => {
+  // do somethings
+});
+```
+
+### createApiPipelineWithUrl
+
+**Type Signature:**
+
+```ts
+const createApiPipelineWithUrl: (
+  url: string,
+  options?: ApiPipelineOptions
+) => ApiPipelineWithUrl;
+
+type ApiPipelineWithUrl = AsyncPipeline<ApiRequest, ApiResponse> & {
+  invoke(
+    calling: SingleCalling,
+    options?: ApiWithUrlInvokeOptions
+  ): Promise<JsonType>;
+};
+```
+
+**Example Usage:**
+
+```ts
+import { createApiPipelineWithUrl } from 'farrow-api-client'
+
+cconst apiPipeline = createApiPipelineWithUrl("http://localhost:3000/api")
+```
+
+#### `apiPipeline.invoke`
+
+**Type Signature:**
+
+```ts
+invoke(calling: SingleCalling, options?: ApiWithUrlInvokeOptions | undefined): Promise<JsonType>
+
+type ApiWithUrlInvokeOptions = ApiInvokeOptions & {
+  batch?: boolean;
+};
+```
+
+**Example Usage:**
+
+```ts
+const result = await apiPipeline.invoke({
+  type: "Single",
+  path: ["getTodo"],
+  input: {},
+});
+```
+
+```ts
+const [result0, result1] = await Promise.all([
+  apiPipeline.invoke(
+    {
+      type: "Single",
+      path: ["getTodo"],
+      input: {},
+    },
+    { batch: true }
+  ),
+  apiPipeline.invoke(
+    {
+      type: "Single",
+      path: ["getTodo"],
+      input: {},
+    },
+    { batch: true }
+  ),
+]);
+```
+
+**Options:**
+
+- `batch?: boolean`
+
+  If open the batch feature for merging request and date caching. It implement by [dataloader](https://github.com/graphql/dataloader). Default: `false`.
+
+Used for CORS.
+
 ## Learn more
+
+:::info Relative Module
+
+- [farrow-schema](./01-farrow-schema.mdx): Powerful and extensible schema builder library. Create Schema like type of [TypeSccript](https://www.typescriptlang.org/).
+- [farrow-api](./02-farrow-api.mdx): Schema-based Api builder.
+- [farrow-api-server](./03-farrow-api-server.mdx): [farrow-api](./02-farrow-api.mdx) adapter for [farrow-http](../pipeline/02-farrow-http.mdx).
+- [farrow-federation](./06-farrow-federation.mdx): A aggregation tool for [farrow-api](./02-farrow-api.mdx).
+
+:::
+
+:::info Sample
+
+- [farrow-sample/06-deno-api](https://github.com/tqma113/farrow-sample/tree/main/samples/06-deno-api): Sample of deno api.
+- [farrow-sample/13-api-federation](https://github.com/tqma113/farrow-sample/tree/main/samples/13-api-federation): Sample for api federation.
+- [farrow-sample/14-api-todo-app](https://github.com/tqma113/farrow-sample/tree/main/samples/14-api-todo-app): Todo App with **farrow-api**.
+- [farrow-sample/23-api-todo](https://github.com/tqma113/farrow-sample/tree/main/samples/23-api-todo): A template for farrow with rpc api.
+
+:::
