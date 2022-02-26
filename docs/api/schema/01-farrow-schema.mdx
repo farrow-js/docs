@@ -499,6 +499,16 @@ if (result.isOk) {
 
 The strict mode is defaultly open while validating. When a Schema wrapped by `NonStrict`, the strict mode will be closed. It affects below schema.
 
+:::tip
+
+You can control the strict mode by option of `Validator.validate`, like:
+
+```ts
+const result1 = Validator.validate(Number, "123.32", { strict: false });
+```
+
+:::
+
 - Number
 
 ```ts
@@ -509,6 +519,7 @@ The `result0` always is `123.32`(It means validate successfully).
 
 ```ts
 const result1 = Validator.validate(Number, "123.32");
+const result1 = Validator.validate(Number, "123.32", { strict: false });
 ```
 
 But the `result1` will be `false` when strict mode is open and `123.32` when strict mode is close. It will try to parse `string` to `number`.
@@ -523,18 +534,21 @@ The `result0` always is `123`.
 
 ```ts
 const result1 = Validator.validate(Int, 123.32);
+const result1 = Validator.validate(Int, 123.32, { strict: false });
 ```
 
 But the `result1` will be `false` when strict mode is open and `123` when strict mode is close. It will try to `Math.floor` the input.
 
 ```ts
 const result2 = Validator.validate(Int, "123");
+const result2 = Validator.validate(Int, "123", { strict: false });
 ```
 
 But the `result2` will be `false` when strict mode is open and `123` when strict mode is close. It will try to parse `string` to `number`.
 
 ```ts
 const result3 = Validator.validate(Int, "123.32");
+const result3 = Validator.validate(Int, "123.32", { strict: false });
 ```
 
 But the `result3` will be `false` when strict mode is open and `123` when strict mode is close. It will try to parse `string` to `number` and `Math.floor` the result.
@@ -549,6 +563,7 @@ The `result0` always is `true`.
 
 ```ts
 const result1 = Validator.validate(Float, "123.32");
+const result1 = Validator.validate(Float, "123.32", { strict: false });
 ```
 
 But the `result1` will be `false` when strict mode is open and `123.32` when strict mode is close. It will try to parse `string` to `number`.
@@ -563,6 +578,7 @@ The `result0` always is `true`.
 
 ```ts
 const result1 = Validator.validate(Boolean, "true");
+const result1 = Validator.validate(Boolean, "true", { strict: false });
 ```
 
 But the `result1` will be `false` when strict mode is open and `true` when strict mode is close. It will try to parse `string` to `boolean`.
@@ -577,6 +593,7 @@ The `result0` always is `true`.
 
 ```ts
 const result1 = Validator.validate(Literal(123), "123");
+const result1 = Validator.validate(Literal(123), "123", { strict: false });
 ```
 
 But the `result1` will be `false` when strict mode is open and `123` when strict mode is close. It will try to parse `string` to `boolean`.
@@ -600,6 +617,9 @@ The `result0` always is `true`.
 
 ```ts
 const result1 = Validator.validate(Literal(123), '{ id: 0, name: "foo" }');
+const result1 = Validator.validate(Literal(123), '{ id: 0, name: "foo" }', {
+  strict: false,
+});
 ```
 
 But the `result1` will be `false` when strict mode is open and `{ id: 0, name: "foo" }` when strict mode is close. It will try to parse `string` to `JsonType`.
