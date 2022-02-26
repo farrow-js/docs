@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[7237],{3224:function(e){e.exports=JSON.parse('{"name":"React","permalink":"/docs/tags/react","docs":[{"id":"api/pipeline/farrow-react","title":"farrow-react","description":"React adapter for farrow-http.","permalink":"/docs/api/pipeline/farrow-react"}],"allTagsPath":"/docs/tags"}')}}]);

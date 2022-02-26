@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[1888],{3614:function(e){e.exports=JSON.parse('{"name":"Vite","permalink":"/zh-cn/docs/tags/vite","docs":[{"id":"api/pipeline/farrow-vite","title":"farrow-vite","description":"Vite adapter for farrow-http.","permalink":"/zh-cn/docs/api/pipeline/farrow-vite"}],"allTagsPath":"/zh-cn/docs/tags"}')}}]);
