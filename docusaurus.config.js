@@ -49,7 +49,7 @@ const config = {
         title: 'Farrow',
         logo: {
           alt: 'Farrow Logo',
-          src: 'img/logo.svg',
+          src: 'img/Farrow.blue.bg.png',
         },
         items: [
           {to: '/docs/tutorial', label: 'Tutorial', position: 'right'},

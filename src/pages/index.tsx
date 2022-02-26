@@ -80,16 +80,18 @@ export default function Home() {
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />"
+      description="Type-safe asymptotic TypeScript full-stack framework."
     >
-      <header className={clsx("hero hero--primary", styles.heroBanner)}>
-        <div className="container">
-          <h1 className="hero__title">{siteConfig.title}</h1>
-          <p className="hero__subtitle">{siteConfig.tagline}</p>
+      <header className={styles.header}>
+        <div className={clsx('container', styles.container)}>
+          <div className={styles.titlecontainer}>
+            <h1 className={styles.title}>{siteConfig.title}</h1>
+            <p className={styles.subtitle}>{siteConfig.tagline}</p>
+          </div>
           <div className={styles.buttons}>
             <Link
               className={clsx(
-                "button button--outline button--secondary button--lg",
+                "button button--secondary button--lg",
                 styles.getStarted
               )}
               to={useBaseUrl("/docs/tutorial")}

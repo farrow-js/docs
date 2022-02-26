@@ -5,6 +5,35 @@
  * and scoped locally.
  */
 
+.header {
+  align-items: center;
+  background-color: var(--ifm-hero-background-color);
+  color: var(--ifm-hero-text-color);
+  display: flex;
+  padding: 4rem 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.titlecontainer {
+  margin: 0 auto;
+  max-width: var(--ifm-container-width);
+  padding: 0 var(--ifm-spacing-horizontal);
+  flex: 1;
+}
+
+.title {
+  font-size: 3rem;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+}
+
 .heroBanner {
   padding: 4rem 0;
   text-align: center;
@@ -16,12 +45,25 @@
   .heroBanner {
     padding: 2rem;
   }
+  .titlecontainer {
+    --ifm-col-width: 100%;
+    flex-basis: var(--ifm-col-width);
+  }
+
+  .buttons {
+    padding: 0!important;
+  }
+  .titlecontainer {
+    padding: 0!important;
+  }
 }
 
 .buttons {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
+  padding: 0 16px;
+  flex: 1;
 }
 
 .features {
