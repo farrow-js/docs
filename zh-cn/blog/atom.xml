@@ -6,7 +6,7 @@
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://farrowjs.netlify.app/zh-cn/blog"/>
     <subtitle>Farrow Blog</subtitle>
-    <icon>https://farrowjs.netlify.app/zh-cn/img/favicon.ico</icon>
+    <icon>https://farrowjs.netlify.app/zh-cn/img/Farrow.blue.bg.png</icon>
     <entry>
         <title type="html"><![CDATA[Exploring the Type-Safe Node.js Web Framework]]></title>
         <id>exploring-the-type-safe-node-js-web-framework</id>
