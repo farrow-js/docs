@@ -7,8 +7,8 @@
 
 .header {
   align-items: center;
-  background-color: var(--ifm-color-primary);
-  color: var(--ifm-hero-text-color);
+  background-color: #235a97;
+  color: #ffffff;
   display: flex;
   padding: 4rem 0;
 }
