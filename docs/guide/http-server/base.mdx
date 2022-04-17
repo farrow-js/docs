@@ -391,3 +391,37 @@ http.get('/product?<product:number>').use((request) => {
 ```
 
 即可实现上面 match 那个例子同样的能力。这里更多的匹配书写规则可以看 [HTTP Router Match](../../api/http/01-farrow-http.mdx#routermatch)。
+
+## 静态文件
+
+Farrow HTTP 提供了 `http.serve` 用来部署静态文件
+
+```ts
+http.serve(basename, dirname)
+```
+
+如果有一个文件的结构如下
+
+```md
+.
+├── foo/
+│   ├── bar/
+│   │   └── aaa.js
+│   ├── baz/
+│   │   └── bbb.css
+│   ├── ccc.png
+```
+
+通过
+
+```ts
+http.serve('/static', './foo')
+```
+
+则可以通过以下链接访问
+
+```
+http://localhost:3000/static/foo/bar/aaa.js
+http://localhost:3000/static/foo/baz/bbb.css
+http://localhost:3000/static/foo/ccc.png
+```
