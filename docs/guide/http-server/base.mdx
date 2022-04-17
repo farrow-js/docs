@@ -1,0 +1,393 @@
+---
+slug: /guide/http-server
+title: Introduction
+authors: [tqma113]
+tags: []
+sidebar_position: 1
+---
+
+这一部分将介绍 Farrow 作为一个 Node.js HTTP Server，他的一些基础用法和一些特定场景使用的最佳实践。
+
+:::info
+
+这里我们假设你已经阅读过了 [教程](../../tutorial/http-server.mdx) 部分的文档，对 Farrow HTTP 部分有了初步的了解，如果还没有，请前往阅读，完成之后再开始本章的进程。
+
+:::
+
+这里我们先介绍 Farrow HTTP 的基础部分，在 Farrow 的 HTTP Server 中，他的请求对象、响应方案、中间件设计和路由方案。
+
+## Request
+
+在其他的 HTTP Server 中 Request 基本都是从 Node.js 的原生 Request 对象扩展而来的，但在 Farrow 中不是这样，Farrow 的 Request 对象是一个包含了请求具体数据内容的 Plain Object，它的朴素类型如下
+
+```ts
+export type RequestInfo = {
+  readonly pathname: string
+  readonly method?: string
+  readonly query?: RequestQuery
+  readonly body?: any
+  readonly headers?: RequestHeaders
+  readonly cookies?: RequestCookies
+}
+```
+
+其中基本包含了所有，我们需要从请求中获取的数据信息，可以通过如下的方式获取它们
+
+```ts
+http.use((request) => {
+  // access request pathname
+  console.log('pathname', request.pathname)
+
+  // access request method
+  console.log('method', request.method)
+
+  // access request query
+  console.log('query', request.query)
+
+  // access request body
+  console.log('body', request.body)
+
+  // access request headers
+  console.log('headers', request.headers)
+
+  // access request cookies
+  console.log('cookies', request.cookies)
+})
+```
+
+### 原生对象
+
+当然，有些时候仅仅这些数据是不够的，我们需要用到 Node.js 的原生对象，在 Farrow 中，可以通过以下的方式获取
+
+```ts
+import { useReq } from 'farrow-http'
+
+http.use((request) => {
+  // The native request object
+  const req = useReq()
+
+  // ...
+})
+```
+
+:::info HOOKS
+
+除了 `useReq` 这个 Hook 之外，还有许多功能强大的 Hook，详情请移步 [HTTP Hooks](../../api/http/01-farrow-http.mdx#hooks)。
+
+:::
+
+:::info
+
+需要注意的是这里我们提到的 Request 对象是它的朴素状态，Farrow 中支持通过 Schema 描述，将 Request 的类型收窄，具体请移步 [Routing](#routing)。
+
+:::
+
+## Response
+
+Farrow 中的 Response 对象同样与其他框架的不同，在 Farrow 中响应信息和维护函数的集合，如果你要对请求作出响应，只需要在中间件中返回它
+
+```ts
+import { Response } from 'farrow-http'
+
+http.use(() => {
+  // returning response in middleware
+  return Response
+})
+```
+
+事实上，如果你使用的是 TypeScript，如果不返回 Response 对象则会类型报错。如果你要设置响应的内容，则需要
+
+```ts
+// respond text
+http.use(() => {
+  return Response.text(`Farrow`)
+})
+
+// respond json
+http.use(() => {
+  return Response.json({
+    farrow: true,
+    data: {},
+  })
+})
+
+// respond html
+http.use(() => {
+  return Response.html(`<h1>Farrow</h1>`)
+})
+
+// respond file
+http.use(() => {
+  return Response.file(filename)
+})
+```
+
+如你所见，设置不同的相应类型则需要使用对应的函数，当然，除了响应的内容之外，你哈可以设置其他
+
+- Headers
+
+```ts
+http.use(() => {
+  return Response.headers({
+    a: '1',
+    b: '2',
+  })
+})
+```
+
+- Cookies
+
+```ts
+http.use(() => {
+  return Response.cookies({
+    a: '1',
+    b: '2',
+  })
+})
+```
+
+- Response Status
+
+```ts
+http.use(() => {
+  return Response.status(404, 'Not Found')
+})
+```
+
+:::info
+
+如果你不主动设置 Status，默认的状态码是 200。
+
+:::
+
+你还可以将这些设置操作连起来：
+
+```ts
+http.use(() => {
+  return Response
+    .headers({
+      a: '1',
+      b: '2',
+    })
+    .cookies({
+      a: '1',
+      b: '2',
+    })
+    .status(200)
+    .string('Hello Farrow!')
+})
+```
+
+:::info
+
+除了这些基础功能方法，Response 还有许多功能长大的方法，详情可以看 [HTTP Response](../../api/http/01-farrow-http.mdx#response)
+
+:::
+
+此外 Response 之间还可以合并，例如
+
+```ts
+let response0 = Response.status(200)
+let response1 = Response.header('a', '1')
+let response2 = Response.header('b', '2')
+let response3 = Response.cookie('c', '3')
+
+let response = Response.merge(response0, response1, response2, response3)
+
+// equal
+let response = Response.status(200).header('a', '1').header('b', '2').cookie('c', '3')
+```
+
+### 原生对象
+
+Farrow 的 Response 对象也可以通过 Hook 来获取
+
+```ts
+import { useRes } from 'farrow-http'
+
+http.use((request) => {
+  // The native response object
+  const res = useRes()
+
+  // ...
+})
+```
+
+:::info HOOKS
+
+除了 `useReq` 这个 Hook 之外，还有许多功能强大的 Hook，详情请移步 [HTTP Hooks](../../api/http/01-farrow-http.mdx#hooks)。
+
+:::
+
+如果你需要自己通过原生响应对象控制响应行为，不期望使用 Farrow 的能力，那么可以使用 `Response.custom`
+
+```ts
+import { useRes, Response } from 'farrow-http'
+
+http.use((request) => {
+  // The native response object
+  const res = useRes()
+
+  // ...
+
+  return Response.custom()
+})
+```
+
+## Middleware
+
+Farrow 的中间件也是经过特殊设计的，与其他的框架不同。Farrow 中 HTTP 的中间件类型如下
+
+```ts
+type Next = (request: RequestInfo) => Response
+
+type Middleware = (request: RequestInfo, next: Next) => Response
+```
+
+有了这样的设计，我们可以完成一些很有意思的事情。
+
+- 向后面的中间件传递新的请求对象
+
+```ts
+http.use((request, next) => {
+  // no need to modify the request, just calling next(new_request) with a new request info
+  return next({
+    ...request,
+    pathname: '/fixed',
+  })
+})
+
+http.use((request) => {
+  // request pathname will be '/fixed'
+  console.log('pathname', request.pathname)
+})
+```
+
+- 合并后面中间件返回的响应对象
+
+```ts
+http.use(async (request, next) => {
+  // next() returning response received from downstream
+  let response = await next()
+  let headers = {
+    'header-key': 'header-value',
+  }
+  // filter or merge response and return
+  return Response.headers(headers).merge(response)
+})
+
+http.use(async (request) => {
+  return Response.json(request)
+})
+```
+
+:::info
+
+Farrow HTTP 中间件的设计也经过了许多人的思考，他的设计理念可以看 [](../../philosophy/middleware-mode.mdx)
+
+:::
+
+## Routing
+
+路由是指应用程序的端点 (URI) 如何响应客户端请求。
+
+### 基于 path 的路由匹配
+
+Farrow HTTP 对象中提供了对应各个 HTTP Method 的路由函数，例如 `http.get`、`http.post`
+
+```ts
+http.get('/hello').use(async (request) => {
+  return Response.string('Hello Farrow!')
+})
+```
+
+`http.route` 则可以处理所有 HTTP Method
+
+```ts
+http.route('/hello').use(async (request) => {
+  return Response.string('Hello Farrow!')
+})
+```
+
+Farrow 也提供了 `Router` 路由工厂函数
+
+```ts
+import { Router } from 'farrow-http'
+
+const user = Router()
+
+http.route('/user').use(user)
+
+// this will match /user/info
+user.get('/info').use(async (request) => {
+  return Response.json({
+    userInfo: {},
+  })
+})
+
+// this will match /user/:id
+user.get('/<id:int>').use(async (request) => {
+  return Response.json({
+    userId: request.params.id,
+  })
+})
+```
+
+Farrow 的 path 匹配是基于 [path-to-regexp](https://github.com/pillarjs/path-to-regexp) 实现的，具体的 path 路由匹配规则，可以看 [path-to-regexp](https://github.com/pillarjs/path-to-regexp)。
+
+### 基于 Schema 的路由匹配
+
+除了传统的 path 的匹配方案，Farrow 还提供了机遇 Schema 的路由匹配，其能力通过 `http.match` 实现的
+
+```ts
+http
+  .match({
+    pathname: '/product',
+    query: {
+      productId: Number,
+    },
+  })
+  .use((request) => {
+    // productId is a number
+    console.log('productId', request.query.productId)
+  })
+```
+
+之前没有使用 `http.match` 时，`RequestInfo` 的类型为
+
+```ts
+export type RequestInfo = {
+  readonly pathname: string
+  readonly method?: string
+  readonly query?: RequestQuery
+  readonly body?: any
+  readonly headers?: RequestHeaders
+  readonly cookies?: RequestCookies
+}
+```
+
+而当这里使用了 `http.match` 之后，则会根据传递给 match 的 Schema 来收窄 `RequestInfo` 的类型，比如这里就会变成
+
+```ts
+export type RequestInfo = {
+  readonly pathname: string
+  readonly query: {
+    readonly productId: number
+  }
+}
+```
+
+并且这里的匹配方案是所有数据匹配，而不是 pathname 匹配即可，比如 `/product?productId=100` 可以通过匹配规则，而 `/product` 和 `/product?productId=foo` 均不可。
+
+除了这种方式，Farrow 也提供了在 `http.get`、`http.post` 中使用特定规则的 `pathname` 来实现类似的功能。
+
+```ts
+http.get('/product?<product:number>').use((request) => {
+  return Response.json({
+    type: 'get',
+    request,
+  })
+})
+```
+
+即可实现上面 match 那个例子同样的能力。这里更多的匹配书写规则可以看 [HTTP Router Match](../../api/http/01-farrow-http.mdx#routermatch)。

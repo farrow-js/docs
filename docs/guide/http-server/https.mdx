@@ -4,3 +4,32 @@ authors: [tqma113]
 tags: []
 sidebar_position: 1
 ---
+
+针对 HTTPS，Farrow 中也提供了对应的工厂函数 —— `Https`，相比 `Http` 来说，需要多传递一个参数 `tls`。
+
+
+```ts
+import { Https, Response } from "farrow-http";
+
+const CERT = fs.readFileSync(path.join(__dirname, "./keys/https-cert.pem"));
+const KEY = fs.readFileSync(path.join(__dirname, "./keys/https-key.pem"));
+const CA = fs.readFileSync(path.join(__dirname, "keys/https-csr.pem"));
+
+const https = Https({
+  tls: {
+    cert: CERT,
+    ca: CA,
+    key: KEY,
+  },
+});
+
+// add http middleware
+https.use(() => {
+  // returning response in middleware
+  return Response.text(`Hello Farrow`);
+});
+
+https.listen(3000);
+```
+
+关于 `Https`，更多的详细内容可以看 [HTTPS](../../api/http/01-farrow-http.mdx#https)。

@@ -4,3 +4,13 @@ authors: [tqma113]
 tags: []
 sidebar_position: 1.1
 ---
+
+Farrow 也提供了基于 [cors](https://github.com/expressjs/cors) 实现的 `farrow-cors` 包
+
+```ts
+import { cors } from "farrow-cors";
+
+http.use(cors());
+```
+
+引入使用即可，功能、参数与 `cors` 相同。
