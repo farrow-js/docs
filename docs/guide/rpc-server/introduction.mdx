@@ -1,0 +1,111 @@
+---
+slug: /guide/rpc-server
+title: Introduction
+authors: [tqma113]
+tags: []
+sidebar_position: 0
+---
+
+这一部分开始我们将介绍 Farrow 中在 RPC 方向的方案。
+
+:::info
+
+这里我们假设你已经阅读过了 [教程 - PRC Server](../../tutorial/rpc-server.mdx) 部分的文档，对 Farrow RPC 部分有了初步的了解，如果还没有，请前往阅读，完成之后再开始本章的进程。
+
+:::
+
+这里我们先介绍 Farrow RPC 的基础部分，在 Farrow 的 RPC Server 中，他的 API 设计、开发、服务启动部分。
+
+## Farrow API
+
+在 Farrow 的 RPC 设计中，Farrow API 是最核心的部分，其他都是围绕着这部分扩展而来。
+
+Farrow API 可以简单的理解为一个异步函数的类型定义，这个定义中有这个 API 的入参信息和返回值信息。
+
+```ts
+import { Api } from "farrow-api";
+
+// 这里定了一个执行加法的 API
+const add = Api({
+  input: { a: Number, b: Number },
+  output: Number,
+});
+```
+
+有了这样一个 API 之后，我们可以为它添加实现函数（实际上就是 PRC 的处理函数）
+
+```ts
+add.use(({ a, b }) => {
+  return a + b
+})
+```
+
+在这里我们可以直接执行这个 API，就可以得到执行的结果
+
+```ts
+const result = add.run({ a: 1, b: 2 }); // Maybe<3>
+```
+
+而在这里，这样执行这个 API 比起单纯的函数调用
+
+```ts
+const add = ({ a, b }: { a: number, b: number }) => {
+  return a + b
+}
+const result = add({ a: 1, b: 2 })
+```
+
+则多了一层，入参检验和返回值检验，例如传入错误的入参
+
+```ts
+const result = add.run({ a: 1, b: 'error' });
+```
+
+则 `result` 会携带入参的错误信息，返回值也是同理。
+
+以上就是 Farrow API 的设计与开发方式。
+
+## 服务聚合
+
+有了上面的 API 之后我们就可以通过 `farrow-api-server` 中的 `ApiService` 将这些 API 聚合成一个 API 服务中间件
+
+```ts
+import { ApiService } from "farrow-api-server";
+
+export const entries = {
+  add
+};
+
+export const apiService = ApiService({
+  entries,
+});
+```
+
+从而可以添加到 Server 中
+
+```ts
+import path from "path";
+import { Http } from "farrow-http";
+import { vite } from "farrow-vite";
+
+import { apiService } from "./api";
+
+let http = Http();
+
+// attach services to http
+http.use(apiService);
+
+http.listen(3000, () => {
+  console.log("server started at http://localhost:3000");
+});
+```
+
+以上就是 Farrow RPC 的 Server 基础部分，下一章节是 Introspection，它是 Farrow RPC 设计的核心和真正有价值的地方。
+
+:::info Sample
+
+- [farrow-sample/10-api-base](https://github.com/tqma113/farrow-sample/tree/main/samples/10-api-base): Sample of **farrow-api**.
+- [farrow-sample/14-api-todo-app](https://github.com/tqma113/farrow-sample/tree/main/samples/14-api-todo-app): Todo App with **farrow-api**.
+- [farrow-sample/23-api-todo](https://github.com/tqma113/farrow-sample/tree/main/samples/23-api-todo): A template for farrow with rpc api.
+
+:::
