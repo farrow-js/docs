@@ -4,3 +4,75 @@ authors: [tqma113]
 tags: []
 sidebar_position: 6
 ---
+
+Farrow 现在已经可以通过 adapter 复用 Express/Koa 等生态。
+
+## farrow-express
+
+将 farrow-http 运行在 Express App 上 
+
+```ts
+import express from "express";
+import { Http, Response } from "farrow-http";
+import { adapter } from "farrow-express";
+
+const PORT = 3000;
+
+const http = Http();
+
+http
+  .match({
+    pathname: "/test",
+  })
+  .use((data) => {
+    return Response.text(JSON.stringify(data));
+  });
+
+const app = express();
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
+app.use("/farrow", adapter(http));
+
+app.listen(PORT, () => {
+  console.log(`Example app listening at http://localhost:${PORT}`);
+});
+```
+
+## farrow-koa
+
+将 farrow-http 运行在 Koa App 上
+
+```ts
+import Koa from "koa";
+import { Http } from "farrow-http";
+import { adapter } from "farrow-koa";
+
+const PORT = 3000;
+
+const http = Http();
+
+http
+  .match({
+    pathname: "/test",
+  })
+  .use((data) => {
+    return Response.text(JSON.stringify(data));
+  });
+
+const app = new Koa();
+
+app.use(adapter(http));
+
+app.listen(PORT, () => {
+  console.log(`Example app listening at http://localhost:${PORT}`);
+});
+```
+
+:::info
+
+更多的 API 设计细节可看 [farrow-express](../../api/http/03-farrow-express.mdx)、[farrow-koa](../../api/http/04-farrow-koa.mdx)。
+
+:::
