@@ -7,10 +7,183 @@ sidebar_position: 1
 
 从上一章节我们了解到了 Farrow RPC API 设计的核心部分，但却不是他真正有魅力的地方，这个章节将介绍它最有魅力的能力 ——— Introspection。
 
-## Introspection
+## 是什么
 
+源自于 GraphQL https://graphql.org/learn/introspection/，GraphQL Code Generator、GraphQL Playground 都基于该特性实现。
+
+Farrow Server 中默认支持通过发送特定请求来获取 Schema 信息
+
+在服务器中，完成 API 开发并作为中间件添加至 Server
+
+```ts
+import { ID, Struct } from 'farrow-schema'
+import { Api } from 'farrow-api'
+
+import { Http } from 'farrow-http'
+import { ApiService } from 'farrow-api-server'
+
+const User = Struct({
+    id: ID,
+    name: String,
+})
+
+export const getUser = Api({
+  description: 'get notes',
+  input: { id: String },
+  output: User,
+})
+
+getUser.use(({ id }) => {
+  return {
+    id,
+    name: `name of ${id}`
+  }
+})
+
+const http = Http()
+
+http.use(ApiService({ entries: { getUser } }))
+
+http.listen(3000, () => {
+  console.log('Listening on localhost:3000')
+})
+```
+
+Postman 中发送
+
+```ts
+{
+  "type": "Introspection"
+}
+```
+
+得到
+
+```ts
+{
+    "type": "ApiSuccessResponse",
+    "output": {
+        "protocol": "Farrow-API",
+        "types": {
+            "0": {
+                "type": "Struct",
+                "fields": {
+                    "id": {
+                        "typeId": 1,
+                        "$ref": "#/types/1"
+                    }
+                }
+            },
+            "1": {
+                "type": "Scalar",
+                "valueType": "string",
+                "valueName": "String"
+            },
+            "2": {
+                "type": "Struct",
+                "fields": {
+                    "id": {
+                        "typeId": 3,
+                        "$ref": "#/types/3"
+                    },
+                    "name": {
+                        "typeId": 1,
+                        "$ref": "#/types/1"
+                    }
+                }
+            },
+            "3": {
+                "type": "Scalar",
+                "valueType": "string",
+                "valueName": "ID"
+            }
+        },
+        "entries": {
+            "type": "Entries",
+            "entries": {
+                "getUser": {
+                    "type": "Api",
+                    "input": {
+                        "typeId": 0,
+                        "$ref": "#/types/0"
+                    },
+                    "output": {
+                        "typeId": 2,
+                        "$ref": "#/types/2"
+                    },
+                    "description": "get notes"
+                }
+            }
+        }
+    }
+}
+```
+
+这些就是那些 API 的 Schema 信息。
 
 ## 客户端代码生成
 
+有了这样的能力，我们就可以做到，根据这些信息在客户端生成该接口的调用代码。
 
-## 想象力
+这里我们要用到 Farrow 的 CLI 工具。
+
+首先我们在客户端项目中添加 `farrow.config.js` 文件
+
+```js
+const { createFarrowConfig } = require('farrow')
+
+module.exports = createFarrowConfig({
+  api: [
+    {
+      src: 'http://localhost:3000',
+      // useful for testing api
+      dist: `${__dirname}/api.ts`,
+    },
+  ],
+})
+```
+
+在启动 Server 之后执行 `farrow dev` 即可得到生产的客户端代码：
+
+```ts
+export const api = {
+  /**
+   * @remarks get user
+   */
+  getUser: (input: GetUserInput) =>
+    apiPipeline.invoke(url, {
+      path: ['getUser'],
+      input,
+    }) as Promise<GetUserOutput>,
+}
+```
+
+在客户端的业务代码中，引入该文件直接调用即可。
+
+这样的方式也磨平了 Server 到 Client 的类型割裂的问题。
+
+## More
+
+在拥有了 Introspection 这个强大的能力之后，我们就可以做到一些更有想象力的事情：
+
+- Federation
+- 自动生成文档
+- Playground
+- 自动生成接口的测试用例
+- 结合 Fakerjs Mock 接口
+
+:::info
+
+Federation 将在下个章节详细介绍。
+
+Playground 可以移步 [farrow-js/playground](https://github.com/farrow-js/playground)。
+
+:::
+
+:::info Sample
+
+- [farrow-sample/10-api-base](https://github.com/tqma113/farrow-sample/tree/main/samples/10-api-base): Sample of **farrow-api**.
+- [farrow-sample/14-api-todo-app](https://github.com/tqma113/farrow-sample/tree/main/samples/14-api-todo-app): Todo App with **farrow-api**.
+- [farrow-sample/23-api-todo](https://github.com/tqma113/farrow-sample/tree/main/samples/23-api-todo): A template for farrow with rpc api.
+
+:::
