@@ -120,6 +120,10 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      gtag: {
+        trackingID: 'G-BKWDMCNG76',
+        anonymizeIP: true,
+      },
     }),
 };
 
