@@ -13,7 +13,7 @@ const config = {
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/Farrow.blue.bg.png",
-  organizationName: 'Farrow Team',
+  organizationName: 'farrow-js',
   projectName: "website",
   deploymentBranch: "release",
 
