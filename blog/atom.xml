@@ -9,7 +9,7 @@
     <icon>https://farrowjs.netlify.app/img/Farrow.blue.bg.png</icon>
     <entry>
         <title type="html"><![CDATA[Exploring the Type-Safe Node.js Web Framework]]></title>
-        <id>exploring-the-type-safe-node-js-web-framework</id>
+        <id>https://farrowjs.netlify.app/blog/exploring-the-type-safe-node-js-web-framework</id>
         <link href="https://farrowjs.netlify.app/blog/exploring-the-type-safe-node-js-web-framework"/>
         <updated>2021-08-05T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[WIP]]></summary>
@@ -18,10 +18,12 @@
             <name>Ma Tianqi</name>
             <uri>https://github.com/tqma113</uri>
         </author>
+        <category label="Node.js" term="Node.js"/>
+        <category label="Framework" term="Framework"/>
     </entry>
     <entry>
         <title type="html"><![CDATA[Farrow first look: with Express/Koa/GraphQL and other frameworks to compare]]></title>
-        <id>farrow-first-look-with-express-koa-graphql-and-other-frameworks-to-compare</id>
+        <id>https://farrowjs.netlify.app/blog/farrow-first-look-with-express-koa-graphql-and-other-frameworks-to-compare</id>
         <link href="https://farrowjs.netlify.app/blog/farrow-first-look-with-express-koa-graphql-and-other-frameworks-to-compare"/>
         <updated>2021-03-23T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[WIP]]></summary>
@@ -30,10 +32,12 @@
             <name>Ma Tianqi</name>
             <uri>https://github.com/tqma113</uri>
         </author>
+        <category label="Node.js" term="Node.js"/>
+        <category label="Framework" term="Framework"/>
     </entry>
     <entry>
         <title type="html"><![CDATA[Introducing Farrow: A type-friendly, functional-style Node.js web framework]]></title>
-        <id>introducing-farrow-a-type-friendly-functional-style-node-js-web-framework</id>
+        <id>https://farrowjs.netlify.app/blog/introducing-farrow-a-type-friendly-functional-style-node-js-web-framework</id>
         <link href="https://farrowjs.netlify.app/blog/introducing-farrow-a-type-friendly-functional-style-node-js-web-framework"/>
         <updated>2021-01-05T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[WIP]]></summary>
@@ -42,5 +46,7 @@
             <name>Lucifier</name>
             <uri>https://github.com/lucifier129</uri>
         </author>
+        <category label="Node.js" term="Node.js"/>
+        <category label="Framework" term="Framework"/>
     </entry>
 </feed>

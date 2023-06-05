@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkfarrow_website=self.webpackChunkfarrow_website||[]).push([[4028],{1822:function(e){e.exports=JSON.parse('{"name":"Why","permalink":"/docs/tags/why","docs":[{"id":"tutorial/why","title":"Why Farrow","description":"The Problem","permalink":"/docs/tutorial/why"}],"allTagsPath":"/docs/tags"}')}}]);

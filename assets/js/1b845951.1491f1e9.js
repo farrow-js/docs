@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfarrow_website=self.webpackChunkfarrow_website||[]).push([[5559],{1369:e=>{e.exports=JSON.parse('{"label":"Bundler","permalink":"/docs/tags/bundler","allTagsPath":"/docs/tags","count":1,"items":[{"id":"api/cli/farrow","title":"farrow","description":"Useful modules for developing and bundling farrow app.","permalink":"/docs/api/cli/farrow"}]}')}}]);

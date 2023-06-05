@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfarrow_website=self.webpackChunkfarrow_website||[]).push([[389],{3263:e=>{e.exports=JSON.parse('{"label":"Deno","permalink":"/docs/tags/deno","allTagsPath":"/docs/tags","count":1,"items":[{"id":"api/rpc/farrow-deno-api","title":"farrow-deno-api","description":"A deno server middleware.","permalink":"/docs/api/rpc/farrow-deno-api"}]}')}}]);

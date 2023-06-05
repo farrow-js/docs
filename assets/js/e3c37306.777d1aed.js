@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfarrow_website=self.webpackChunkfarrow_website||[]).push([[5595],{9167:t=>{t.exports=JSON.parse('{"label":"Start","permalink":"/docs/tags/start","allTagsPath":"/docs/tags","count":1,"items":[{"id":"tutorial/getting-started","title":"Getting Started","description":"Overview","permalink":"/docs/tutorial"}]}')}}]);

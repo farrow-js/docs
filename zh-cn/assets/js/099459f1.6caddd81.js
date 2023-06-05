@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkfarrow_website=self.webpackChunkfarrow_website||[]).push([[5275],{4707:function(a){a.exports=JSON.parse('{"allTagsPath":"/zh-cn/blog/tags","slug":"/zh-cn/blog/tags/framework","name":"Framework","count":3,"permalink":"/zh-cn/blog/tags/framework"}')}}]);

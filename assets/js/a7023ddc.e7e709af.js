@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfarrow_website=self.webpackChunkfarrow_website||[]).push([[1713],{3457:e=>{e.exports=JSON.parse('[{"label":"Node.js","permalink":"/blog/tags/node-js","count":3},{"label":"Framework","permalink":"/blog/tags/framework","count":3}]')}}]);
