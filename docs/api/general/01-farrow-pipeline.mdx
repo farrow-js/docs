@@ -508,8 +508,8 @@ const foo = createAsyncPipeline<number, number>();
 foo.use((count, next) => {
   return next(count + 1);
 });
-foo.useLazy((count, next) => {
-  return () => count * 2;
+foo.useLazy(async () => {
+  return (count, next) => count * 2;
 });
 
 // 3. run
