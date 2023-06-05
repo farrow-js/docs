@@ -13,6 +13,7 @@ const config = {
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/Farrow.blue.bg.png",
+  organizationName: 'Farrow Team',
 
   i18n: {
     defaultLocale: "en",
