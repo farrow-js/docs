@@ -13,7 +13,7 @@ const config = {
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/Farrow.blue.bg.png",
-  organizationName: 'farrow-js',
+  organizationName: "farrow-js",
   projectName: "website",
   deploymentBranch: "release",
 
@@ -39,6 +39,10 @@ const config = {
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
+        },
+        gtag: {
+          trackingID: "G-BKWDMCNG76",
+          anonymizeIP: true,
         },
       }),
     ],
@@ -122,10 +126,6 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
-      },
-      gtag: {
-        trackingID: 'G-BKWDMCNG76',
-        anonymizeIP: true,
       },
     }),
 };
