@@ -14,6 +14,8 @@ const config = {
   onBrokenMarkdownLinks: "warn",
   favicon: "img/Farrow.blue.bg.png",
   organizationName: 'Farrow Team',
+  projectName: "website",
+  deploymentBranch: "release",
 
   i18n: {
     defaultLocale: "en",
